@@ -16,6 +16,7 @@
 <p>Role: ${sessionScope.loggedInUser.role}</p>
 
 <p><a href="${pageContext.request.contextPath}/home">Home</a></p>
+<p><a href="${pageContext.request.contextPath}/vehicles">Browse Vehicles</a></p>
 <p><a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 </body>
 </html>
