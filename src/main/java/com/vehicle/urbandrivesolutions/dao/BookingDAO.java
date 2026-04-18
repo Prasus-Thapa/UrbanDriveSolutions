@@ -74,6 +74,7 @@ public class BookingDAO {
         String vehicleSql = "SELECT price_per_day, availability_status FROM vehicles WHERE vehicle_id = ?";
         String bookingSql = "INSERT INTO bookings (user_id, vehicle_id, pickup_date, return_date, total_amount, booking_status) VALUES (?, ?, ?, ?, ?, ?)";
         String updateVehicleSql = "UPDATE vehicles SET availability_status = 'BOOKED' WHERE vehicle_id = ?";
+        String paymentSql = "INSERT INTO payments (booking_id, amount, payment_method, payment_status, transaction_code) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DBConnection.getConnection()) {
             connection.setAutoCommit(false);
@@ -104,7 +105,8 @@ public class BookingDAO {
 
                     BigDecimal totalAmount = pricePerDay.multiply(BigDecimal.valueOf(rentalDays));
 
-                    try (PreparedStatement bookingStatement = connection.prepareStatement(bookingSql);
+                    try (PreparedStatement bookingStatement = connection.prepareStatement(bookingSql, PreparedStatement.RETURN_GENERATED_KEYS);
+                         PreparedStatement paymentStatement = connection.prepareStatement(paymentSql);
                          PreparedStatement updateVehicleStatement = connection.prepareStatement(updateVehicleSql)) {
 
                         bookingStatement.setInt(1, userId);
@@ -114,6 +116,22 @@ public class BookingDAO {
                         bookingStatement.setBigDecimal(5, totalAmount);
                         bookingStatement.setString(6, "PENDING");
                         bookingStatement.executeUpdate();
+
+                        int bookingId;
+                        try (ResultSet generatedKeys = bookingStatement.getGeneratedKeys()) {
+                            if (!generatedKeys.next()) {
+                                rollback(connection);
+                                throw new RuntimeException("Booking could not be created.");
+                            }
+                            bookingId = generatedKeys.getInt(1);
+                        }
+
+                        paymentStatement.setInt(1, bookingId);
+                        paymentStatement.setBigDecimal(2, totalAmount);
+                        paymentStatement.setString(3, "CARD");
+                        paymentStatement.setString(4, "PENDING");
+                        paymentStatement.setString(5, null);
+                        paymentStatement.executeUpdate();
 
                         updateVehicleStatement.setInt(1, vehicleId);
                         updateVehicleStatement.executeUpdate();
