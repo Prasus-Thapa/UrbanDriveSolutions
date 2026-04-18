@@ -2,17 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Admin Dashboard</title>
 </head>
 <body>
-<h1>Customer Dashboard</h1>
+<h1>Admin Dashboard</h1>
 
 <p style="color: green;">${successMessage}</p>
 
 <p>Welcome, ${sessionScope.loggedInUser.fullName}</p>
 <p>Email: ${sessionScope.loggedInUser.email}</p>
 <p>Phone: ${sessionScope.loggedInUser.phone}</p>
-<p>License Number: ${sessionScope.loggedInUser.licenseNumber}</p>
 <p>Role: ${sessionScope.loggedInUser.role}</p>
 
 <p><a href="${pageContext.request.contextPath}/home">Home</a></p>

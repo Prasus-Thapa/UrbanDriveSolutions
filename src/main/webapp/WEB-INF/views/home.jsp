@@ -8,6 +8,7 @@
 <h1>UrbanDriveSolutions</h1>
 
 <p style="color: green;">${successMessage}</p>
+<p style="color: red;">${errorMessage}</p>
 
 <p>Welcome to the Vehicle Rental Web Application.</p>
 <p><a href="${pageContext.request.contextPath}/login">Login</a></p>
