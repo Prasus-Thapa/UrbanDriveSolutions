@@ -68,19 +68,20 @@ public class PaymentDAO {
         return payments;
     }
 
-    public Payment getPendingPaymentByBookingId(int bookingId) {
+    public Payment getPendingPaymentByBookingIdAndUserId(int bookingId, int userId) {
         String sql = "SELECT p.payment_id, p.booking_id, p.amount, p.payment_method, p.payment_status, p.transaction_code, p.payment_date, " +
                 "u.full_name, CONCAT(v.brand, ' ', v.model) AS vehicle_name " +
                 "FROM payments p " +
                 "JOIN bookings b ON p.booking_id = b.booking_id " +
                 "JOIN users u ON b.user_id = u.user_id " +
                 "JOIN vehicles v ON b.vehicle_id = v.vehicle_id " +
-                "WHERE p.booking_id = ? AND p.payment_status = 'PENDING'";
+                "WHERE p.booking_id = ? AND b.user_id = ? AND p.payment_status = 'PENDING'";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, bookingId);
+            preparedStatement.setInt(2, userId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -95,39 +96,56 @@ public class PaymentDAO {
         return null;
     }
 
-    public void createPendingPayment(int bookingId, java.math.BigDecimal amount) {
-        String sql = "INSERT INTO payments (booking_id, amount, payment_method, payment_status, transaction_code) VALUES (?, ?, ?, ?, ?)";
+    public void processPayment(int paymentId, String paymentMethod, String transactionCode) {
+        String paymentQuerySql = "SELECT booking_id, payment_status FROM payments WHERE payment_id = ?";
+        String updatePaymentSql = "UPDATE payments SET payment_method = ?, payment_status = 'PAID', transaction_code = ?, payment_date = CURRENT_TIMESTAMP WHERE payment_id = ?";
+        String updateBookingSql = "UPDATE bookings SET booking_status = 'CONFIRMED' WHERE booking_id = ?";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getConnection()) {
+            connection.setAutoCommit(false);
 
-            preparedStatement.setInt(1, bookingId);
-            preparedStatement.setBigDecimal(2, amount);
-            preparedStatement.setString(3, "CARD");
-            preparedStatement.setString(4, "PENDING");
-            preparedStatement.setString(5, null);
+            try (PreparedStatement paymentQueryStatement = connection.prepareStatement(paymentQuerySql);
+                 PreparedStatement updatePaymentStatement = connection.prepareStatement(updatePaymentSql);
+                 PreparedStatement updateBookingStatement = connection.prepareStatement(updateBookingSql)) {
 
-            preparedStatement.executeUpdate();
+                paymentQueryStatement.setInt(1, paymentId);
+
+                int bookingId;
+                try (ResultSet resultSet = paymentQueryStatement.executeQuery()) {
+                    if (!resultSet.next()) {
+                        rollback(connection);
+                        throw new RuntimeException("Payment record was not found.");
+                    }
+
+                    String paymentStatus = resultSet.getString("payment_status");
+                    if ("PAID".equalsIgnoreCase(paymentStatus)) {
+                        rollback(connection);
+                        throw new RuntimeException("This payment has already been completed.");
+                    }
+
+                    bookingId = resultSet.getInt("booking_id");
+                }
+
+                updatePaymentStatement.setString(1, paymentMethod);
+                updatePaymentStatement.setString(2, transactionCode);
+                updatePaymentStatement.setInt(3, paymentId);
+                updatePaymentStatement.executeUpdate();
+
+                updateBookingStatement.setInt(1, bookingId);
+                updateBookingStatement.executeUpdate();
+
+                connection.commit();
+
+            } catch (SQLException e) {
+                rollback(connection);
+                throw new RuntimeException("Error processing payment.", e);
+            } catch (RuntimeException e) {
+                rollback(connection);
+                throw e;
+            }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error creating pending payment.", e);
-        }
-    }
-
-    public void markPaymentAsPaid(int paymentId, String paymentMethod, String transactionCode) {
-        String sql = "UPDATE payments SET payment_method = ?, payment_status = 'PAID', transaction_code = ? WHERE payment_id = ?";
-
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setString(1, paymentMethod);
-            preparedStatement.setString(2, transactionCode);
-            preparedStatement.setInt(3, paymentId);
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error updating payment status.", e);
+            throw new RuntimeException("Database error while processing payment.", e);
         }
     }
 
@@ -143,5 +161,12 @@ public class PaymentDAO {
         payment.setCustomerName(resultSet.getString("full_name"));
         payment.setVehicleName(resultSet.getString("vehicle_name"));
         return payment;
+    }
+
+    private void rollback(Connection connection) {
+        try {
+            connection.rollback();
+        } catch (SQLException ignored) {
+        }
     }
 }

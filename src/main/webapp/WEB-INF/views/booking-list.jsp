@@ -21,6 +21,7 @@
 
 <p><a href="${pageContext.request.contextPath}/dashboard">Back to Dashboard</a></p>
 <p><a href="${pageContext.request.contextPath}/vehicles">Vehicles</a></p>
+<p><a href="${pageContext.request.contextPath}/payments">Payments</a></p>
 <p><a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 
 <c:if test="${empty bookings}">
@@ -40,6 +41,9 @@
             <th>Return Date</th>
             <th>Total Amount</th>
             <th>Status</th>
+            <c:if test="${not isAdmin}">
+                <th>Action</th>
+            </c:if>
         </tr>
 
         <c:forEach var="booking" items="${bookings}">
@@ -54,6 +58,19 @@
                 <td>${booking.returnDate}</td>
                 <td>${booking.totalAmount}</td>
                 <td>${booking.bookingStatus}</td>
+
+                <c:if test="${not isAdmin}">
+                    <td>
+                        <c:choose>
+                            <c:when test="${booking.bookingStatus == 'PENDING'}">
+                                <a href="${pageContext.request.contextPath}/payments/pay?bookingId=${booking.bookingId}">Pay Now</a>
+                            </c:when>
+                            <c:otherwise>
+                                Payment Completed
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
     </table>

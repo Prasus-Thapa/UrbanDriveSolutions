@@ -128,7 +128,7 @@ public class BookingDAO {
 
                         paymentStatement.setInt(1, bookingId);
                         paymentStatement.setBigDecimal(2, totalAmount);
-                        paymentStatement.setString(3, "CARD");
+                        paymentStatement.setNull(3, java.sql.Types.VARCHAR);
                         paymentStatement.setString(4, "PENDING");
                         paymentStatement.setString(5, null);
                         paymentStatement.executeUpdate();

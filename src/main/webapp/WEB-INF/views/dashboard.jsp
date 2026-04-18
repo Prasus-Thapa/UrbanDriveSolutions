@@ -18,6 +18,7 @@
 <p><a href="${pageContext.request.contextPath}/home">Home</a></p>
 <p><a href="${pageContext.request.contextPath}/vehicles">Browse Vehicles</a></p>
 <p><a href="${pageContext.request.contextPath}/bookings">My Bookings</a></p>
+<p><a href="${pageContext.request.contextPath}/payments">My Payments</a></p>
 <p><a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 </body>
 </html>
