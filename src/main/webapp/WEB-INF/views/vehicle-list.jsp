@@ -21,6 +21,11 @@
 
 <c:if test="${isAdmin}">
   <p><a href="${pageContext.request.contextPath}/vehicles/add">Add New Vehicle</a></p>
+  <p><a href="${pageContext.request.contextPath}/bookings">Manage Bookings</a></p>
+</c:if>
+
+<c:if test="${not isAdmin}">
+  <p><a href="${pageContext.request.contextPath}/bookings">My Bookings</a></p>
 </c:if>
 
 <p><a href="${pageContext.request.contextPath}/dashboard">Back to Dashboard</a></p>
@@ -42,9 +47,7 @@
       <th>Seats</th>
       <th>Price Per Day</th>
       <th>Status</th>
-      <c:if test="${isAdmin}">
-        <th>Actions</th>
-      </c:if>
+      <th>Action</th>
     </tr>
 
     <c:forEach var="vehicle" items="${vehicles}">
@@ -58,17 +61,21 @@
         <td>${vehicle.seats}</td>
         <td>${vehicle.pricePerDay}</td>
         <td>${vehicle.availabilityStatus}</td>
+        <td>
+          <c:choose>
+            <c:when test="${isAdmin}">
+              <a href="${pageContext.request.contextPath}/vehicles/edit?id=${vehicle.vehicleId}">Edit</a>
 
-        <c:if test="${isAdmin}">
-          <td>
-            <a href="${pageContext.request.contextPath}/vehicles/edit?id=${vehicle.vehicleId}">Edit</a>
-
-            <form action="${pageContext.request.contextPath}/vehicles/delete" method="post" style="display:inline;">
-              <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
-              <button type="submit">Delete</button>
-            </form>
-          </td>
-        </c:if>
+              <form action="${pageContext.request.contextPath}/vehicles/delete" method="post" style="display:inline;">
+                <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
+                <button type="submit">Delete</button>
+              </form>
+            </c:when>
+            <c:otherwise>
+              <a href="${pageContext.request.contextPath}/bookings/add?vehicleId=${vehicle.vehicleId}">Book Now</a>
+            </c:otherwise>
+          </c:choose>
+        </td>
       </tr>
     </c:forEach>
   </table>
