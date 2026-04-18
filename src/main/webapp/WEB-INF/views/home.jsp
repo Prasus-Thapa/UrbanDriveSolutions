@@ -6,9 +6,14 @@
 </head>
 <body>
 <h1>UrbanDriveSolutions</h1>
+
+<p style="color: green;">${successMessage}</p>
+
 <p>Welcome to the Vehicle Rental Web Application.</p>
-<p>This page is loaded using Servlet -> forward -> JSP.</p>
+<p><a href="${pageContext.request.contextPath}/login">Login</a></p>
+<p><a href="${pageContext.request.contextPath}/register">Register</a></p>
+<p><a href="${pageContext.request.contextPath}/dashboard">Go to Dashboard</a></p>
+<p><a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 <p><a href="${pageContext.request.contextPath}/db-check">Check Database Connection</a></p>
-<p>Login and registration will be added in Step 4.</p>
 </body>
 </html>
