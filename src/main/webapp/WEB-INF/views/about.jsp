@@ -1,0 +1,170 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>About Us — Urban Drive Solutions</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="top-nav">
+    <div class="top-nav-inner">
+        <a href="${pageContext.request.contextPath}/home" class="nav-brand">Urban Drive Solutions</a>
+        <div class="nav-links">
+            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
+            <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+            <a href="${pageContext.request.contextPath}/about" class="active">About Us</a>
+            <c:if test="${not empty sessionScope.loggedInUser}">
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+            </c:if>
+        </div>
+        <div class="nav-actions">
+            <c:choose>
+                <c:when test="${not empty sessionScope.loggedInUser}">
+                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-md">Logout</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/login"    class="btn btn-outline btn-md">Login</a>
+                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary btn-md">Register</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+</nav>
+
+<main class="page-topnav">
+
+    <!-- Hero -->
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Our Story</span>
+            <h1 class="page-title" style="font-size:clamp(2.5rem,7vw,5rem); letter-spacing:-0.04em;">WHO WE ARE.</h1>
+            <p class="page-subtitle" style="font-size:1.05rem; max-width:40rem; margin-top:0.75rem;">
+                Urban Drive Solutions is Nepal's premium vehicle rental platform — built to make every journey
+                seamless, reliable, and memorable.
+            </p>
+        </div>
+    </div>
+
+    <!-- Mission -->
+    <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;">
+            <div>
+                <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Our Mission</p>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.75rem; font-weight:800; letter-spacing:-0.03em; line-height:1.25; margin-bottom:1rem;">
+                    Making premium mobility accessible to everyone in Nepal.
+                </h2>
+                <p style="font-size:0.9rem; color:var(--n-500); line-height:1.75;">
+                    We started Urban Drive Solutions with a simple belief — renting a quality vehicle should be as easy
+                    as booking a hotel room. No hidden fees, no confusing paperwork, no outdated processes.
+                    Just a clean, modern platform that puts you in the driver's seat.
+                </p>
+            </div>
+            <div style="background:#f8f9fa; border-radius:0.75rem; padding:2.5rem; text-align:center;">
+                <span class="material-symbols-outlined" style="font-size:5rem; color:var(--n-300);">emoji_transportation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row" style="margin-bottom:1.5rem;">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <p class="stat-number">200+</p>
+                <p class="stat-label">Premium Vehicles</p>
+            </div>
+            <div class="stat-item">
+                <p class="stat-number">5,000+</p>
+                <p class="stat-label">Happy Customers</p>
+            </div>
+            <div class="stat-item">
+                <p class="stat-number">24/7</p>
+                <p class="stat-label">Customer Support</p>
+            </div>
+            <div class="stat-item">
+                <p class="stat-number">99%</p>
+                <p class="stat-label">Satisfaction Rate</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Values -->
+    <div style="margin-bottom:3rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--n-400); margin-bottom:1.25rem;">Our Values</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.25rem;">
+
+            <div class="card">
+                <div class="card-body">
+                    <span class="material-symbols-outlined" style="font-size:2rem; margin-bottom:1rem; display:block;">verified</span>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:0.5rem;">Transparency</h3>
+                    <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                        No hidden charges. What you see at booking is exactly what you pay. Our pricing and cancellation policy are always clear upfront.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <span class="material-symbols-outlined" style="font-size:2rem; margin-bottom:1rem; display:block;">star</span>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:0.5rem;">Quality Fleet</h3>
+                    <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                        Every vehicle in our fleet undergoes regular maintenance inspections. You always get a clean, reliable, road-ready vehicle.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <span class="material-symbols-outlined" style="font-size:2rem; margin-bottom:1rem; display:block;">support_agent</span>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:0.5rem;">Customer First</h3>
+                    <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                        Our support team is available around the clock. Whether you need help with a booking or have a question on the road — we're here.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <span class="material-symbols-outlined" style="font-size:2rem; margin-bottom:1rem; display:block;">lock</span>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:0.5rem;">Secure Payments</h3>
+                    <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                        We support eSewa, Khalti, Connect IPS, and card payments — all processed securely with full transaction history in your account.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <section class="cta-section" style="margin-bottom:3rem;">
+        <div class="cta-box">
+            <div>
+                <h2 class="cta-title">Ready to start your journey?</h2>
+                <p class="cta-desc">Browse our fleet and make your first booking in minutes.</p>
+            </div>
+            <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-white btn-xl">Browse the Fleet</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="inner-footer">
+        <div>
+            <p class="footer-brand-name">Urban Drive Solutions</p>
+            <p class="footer-copy">&copy;2026 Urban Drive Solutions — Nepal's Premium Fleet</p>
+        </div>
+        <div class="footer-links">
+            <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
+            <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>
