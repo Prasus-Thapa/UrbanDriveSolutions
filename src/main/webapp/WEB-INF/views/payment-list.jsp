@@ -137,6 +137,9 @@
                                         <c:when test="${payment.paymentStatus == 'NON_REFUNDABLE'}">
                                             <span class="badge badge-cancelled">Non-Refundable</span>
                                         </c:when>
+                                        <c:when test="${payment.paymentStatus == 'CANCELLED'}">
+                                            <span class="badge badge-cancelled">Cancelled</span>
+                                        </c:when>
                                         <c:when test="${payment.paymentStatus == 'FAILED'}">
                                             <span class="badge badge-cancelled">Failed</span>
                                         </c:when>

@@ -166,7 +166,7 @@
                         <span class="material-symbols-outlined" style="font-size:1.75rem; color:var(--n-400);">person</span>
                     </div>
                     <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem;">Prasus Thapa</h3>
-                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Founder & CEO</p>
+                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Founder &amp; CEO</p>
                     <p style="font-size:0.85rem; color:var(--n-500); line-height:1.65;">
                         Prasus leads the company's vision and strategy, driving Urban Drive Solutions from a startup idea into Nepal's most trusted vehicle rental platform.
                     </p>
@@ -252,6 +252,7 @@
         <div class="footer-links">
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
             <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+            <a href="${pageContext.request.contextPath}/policy">Cancellation Policy</a>
         </div>
     </div>
 

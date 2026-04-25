@@ -180,6 +180,53 @@
             </div>
         </div>
 
+        <!-- Post 7 -->
+        <div class="card" style="overflow:hidden;">
+            <div style="background:#fff7ed; height:180px; display:flex; align-items:center; justify-content:center;">
+                <span class="material-symbols-outlined" style="font-size:4rem; color:var(--n-300);">build</span>
+            </div>
+            <div class="card-body">
+                <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.5rem;">
+                    Maintenance · Dec 28, 2025
+                </p>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:0.75rem; line-height:1.35;">
+                    What to Check Before You Drive a Rental Car Off the Lot
+                </h2>
+                <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65; margin-bottom:1.25rem;">
+                    Tyres, mirrors, fuel level, scratches — handing back a car you didn't properly inspect at pickup can be an expensive lesson. Here's a 5-minute pre-drive checklist every renter should run through.
+                </p>
+                <a href="#" style="font-size:0.8rem; font-weight:600; color:#000; text-decoration:none; display:flex; align-items:center; gap:0.25rem;">
+                    Read More <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Post 8 -->
+        <div class="card" style="overflow:hidden;">
+            <div style="background:#f5f0ff; height:180px; display:flex; align-items:center; justify-content:center;">
+                <span class="material-symbols-outlined" style="font-size:4rem; color:var(--n-300);">wb_sunny</span>
+            </div>
+            <div class="card-body">
+                <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.5rem;">
+                    Seasonal Guide · Dec 10, 2025
+                </p>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:0.75rem; line-height:1.35;">
+                    Best Time of Year to Road Trip Across Nepal
+                </h2>
+                <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65; margin-bottom:1.25rem;">
+                    Monsoon washes out passes, winter closes high-altitude roads, and festival seasons bring heavy traffic. Knowing Nepal's travel calendar before you book can save your entire trip.
+                </p>
+                <a href="#" style="font-size:0.8rem; font-weight:600; color:#000; text-decoration:none; display:flex; align-items:center; gap:0.25rem;">
+                    Read More <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Read More -->
+    <div style="text-align:center; margin-bottom:3rem;">
+        <button class="btn btn-outline btn-lg" disabled style="cursor:default;">Read More Blogs</button>
     </div>
 
     <!-- Footer -->
@@ -191,6 +238,7 @@
         <div class="footer-links">
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
             <a href="${pageContext.request.contextPath}/about">About Us</a>
+            <a href="${pageContext.request.contextPath}/policy">Cancellation Policy</a>
         </div>
     </div>
 

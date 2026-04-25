@@ -125,6 +125,121 @@
         </div>
     </section>
 
+    <!-- Vehicle Fleet -->
+    <section style="padding:4rem 0; background:#fff;">
+        <div style="max-width:1200px; margin:0 auto; padding:0 2rem;">
+            <div style="text-align:center; margin-bottom:2.5rem;">
+                <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.5rem;">Available Now</p>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:800; letter-spacing:-0.03em;">Our Vehicle Fleet</h2>
+                <p style="color:var(--n-500); margin-top:0.5rem; font-size:0.95rem;">Browse our curated selection of premium vehicles ready for your next journey.</p>
+            </div>
+
+            <c:choose>
+                <c:when test="${not empty featuredVehicles}">
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem;">
+                        <c:forEach var="v" items="${featuredVehicles}" end="5">
+                            <div class="card" style="overflow:hidden;">
+                                <div style="background:var(--n-100); height:140px; display:flex; align-items:center; justify-content:center;">
+                                    <span class="material-symbols-outlined" style="font-size:4rem; color:var(--n-300);">directions_car</span>
+                                </div>
+                                <div class="card-body">
+                                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; margin-bottom:0.5rem;">
+                                        <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem;">${v.brand} ${v.model}</h3>
+                                        <span style="font-size:0.7rem; font-weight:600; background:var(--n-100); padding:0.2rem 0.6rem; border-radius:99px; white-space:nowrap; flex-shrink:0;">${v.vehicleType}</span>
+                                    </div>
+                                    <div style="display:flex; gap:1rem; font-size:0.8rem; color:var(--n-500); margin-bottom:1rem;">
+                                        <span><span class="material-symbols-outlined" style="font-size:0.9rem; vertical-align:middle;">person</span> ${v.seats} seats</span>
+                                        <span><span class="material-symbols-outlined" style="font-size:0.9rem; vertical-align:middle;">palette</span> ${v.color}</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <p style="font-weight:800; font-size:1.05rem;">Rs. ${v.pricePerDay}<span style="font-size:0.75rem; font-weight:400; color:var(--n-500);">/day</span></p>
+                                        <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-primary btn-sm">Book Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-outline btn-lg">View All Vehicles</a>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div style="text-align:center; padding:3rem; color:var(--n-400);">
+                        <span class="material-symbols-outlined" style="font-size:3rem; display:block; margin-bottom:1rem;">directions_car</span>
+                        <p>No vehicles available right now. Check back soon.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section style="padding:4rem 0; background:#f8f9fa;">
+        <div style="max-width:1200px; margin:0 auto; padding:0 2rem;">
+            <div style="text-align:center; margin-bottom:2.5rem;">
+                <p style="font-size:0.95rem; color:var(--n-400); margin-bottom:0.25rem;">Read Reviews,</p>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:800; letter-spacing:-0.03em;">book with confidence.</h2>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem;">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+                            <div style="width:40px; height:40px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                <span class="material-symbols-outlined" style="font-size:1.25rem; color:var(--n-400);">person</span>
+                            </div>
+                            <div>
+                                <p style="font-weight:700; font-size:0.9rem;">Aarav Sharma</p>
+                                <span style="color:#f59e0b; font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            </div>
+                        </div>
+                        <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                            Rented an SUV for a Pokhara trip — the booking process was seamless and the vehicle was spotless. Will definitely use Urban Drive again!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+                            <div style="width:40px; height:40px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                <span class="material-symbols-outlined" style="font-size:1.25rem; color:var(--n-400);">person</span>
+                            </div>
+                            <div>
+                                <p style="font-weight:700; font-size:0.9rem;">Sita Poudel</p>
+                                <span style="color:#f59e0b; font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            </div>
+                        </div>
+                        <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                            Transparent pricing, no hidden fees, and the cancellation policy is fair. Finally a rental platform in Nepal that actually works well.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+                            <div style="width:40px; height:40px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                <span class="material-symbols-outlined" style="font-size:1.25rem; color:var(--n-400);">person</span>
+                            </div>
+                            <div>
+                                <p style="font-weight:700; font-size:0.9rem;">Bikram Thapa</p>
+                                <span style="color:#f59e0b; font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            </div>
+                        </div>
+                        <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                            Booked a sedan for a week-long road trip. Customer support was responsive and the handover was quick. Highly recommended service!
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div style="text-align:center; margin-top:2rem;">
+                <button class="btn btn-outline btn-lg" disabled style="cursor:default;">Read More Reviews</button>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA -->
     <section class="cta-section">
         <div class="cta-box">
@@ -145,26 +260,28 @@
             <p class="footer-copy">&copy;2026 Urban Drive Solutions — Nepal's Premium Fleet</p>
         </div>
         <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="${pageContext.request.contextPath}/policy">Cancellation Policy</a>
+            <a href="${pageContext.request.contextPath}/about">About Us</a>
         </div>
     </div>
 </footer>
 
 <script>
 (function () {
-    var today = new Date().toISOString().split('T')[0];
-    document.getElementById('homePickup').min = today;
-    document.getElementById('homeReturn').min = today;
+    var pickup = document.getElementById('homePickup');
+    var ret    = document.getElementById('homeReturn');
+    if (!pickup || !ret) return;
 
-    document.getElementById('homePickup').addEventListener('change', function () {
+    var today = new Date().toISOString().split('T')[0];
+    pickup.min = today;
+    ret.min    = today;
+
+    pickup.addEventListener('change', function () {
         if (this.value) {
             var next = new Date(this.value);
             next.setDate(next.getDate() + 1);
-            document.getElementById('homeReturn').min = next.toISOString().split('T')[0];
-            if (document.getElementById('homeReturn').value <= this.value) {
-                document.getElementById('homeReturn').value = '';
-            }
+            ret.min = next.toISOString().split('T')[0];
+            if (ret.value <= this.value) ret.value = '';
         }
     });
 })();

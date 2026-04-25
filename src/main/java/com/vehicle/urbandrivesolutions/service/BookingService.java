@@ -7,7 +7,6 @@ import com.vehicle.urbandrivesolutions.entity.Booking;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class BookingService {
@@ -16,15 +15,14 @@ public class BookingService {
     private final PaymentDAO paymentDAO = new PaymentDAO();
 
     /**
-     * Cancels a booking owned by userId, applying the professional
-     * time-based cancellation policy:
+     * Cancels a booking owned by userId, applying a calendar-day-based policy:
      *
-     *  > 48 h before pickup  →  0 % fee   → REFUNDED
-     *  24 – 48 h before      → 20 % fee   → PARTIALLY_REFUNDED
-     *  < 24 h but before     → 50 % fee   → PARTIALLY_REFUNDED
-     *  After pickup time     → 100 % fee  → NON_REFUNDABLE
+     *  2+ days before pickup date  →  0%   → REFUNDED
+     *  1 day before pickup date    → 20%   → PARTIALLY_REFUNDED
+     *  On the pickup date itself   → 50%   → PARTIALLY_REFUNDED
+     *  After pickup date           → 100%  → NON_REFUNDABLE
      *
-     *  PENDING bookings (not yet paid) always get 0 % / REFUNDED.
+     *  PENDING bookings (not yet paid) always get 0% / REFUNDED.
      */
     public void cancelBooking(int bookingId, int userId) {
 
@@ -44,32 +42,31 @@ public class BookingService {
         String paymentStatus;
 
         if ("PENDING".equalsIgnoreCase(currentStatus)) {
-            // No payment has been collected — cancel with zero fee
             cancellationFee = BigDecimal.ZERO;
-            paymentStatus = "REFUNDED";
+            paymentStatus = "CANCELLED"; // never paid — nothing to refund
         } else {
-            // CONFIRMED — payment was made, apply time-based policy
             LocalDate pickupDate = booking.getPickupDate();
-            LocalDateTime now = LocalDateTime.now();
-            // Treat pickup as the very start of that day (00:00)
-            LocalDateTime pickupDateTime = pickupDate.atStartOfDay();
-            long hoursUntilPickup = ChronoUnit.HOURS.between(now, pickupDateTime);
+            LocalDate today = LocalDate.now();
+            long daysUntilPickup = ChronoUnit.DAYS.between(today, pickupDate);
 
             BigDecimal total = booking.getTotalAmount();
 
-            if (hoursUntilPickup > 48) {
+            if (daysUntilPickup >= 2) {
+                // 2 or more days before pickup — full refund
                 cancellationFee = BigDecimal.ZERO;
                 paymentStatus = "REFUNDED";
-            } else if (hoursUntilPickup > 24) {
+            } else if (daysUntilPickup == 1) {
+                // The day before pickup — 20% fee
                 cancellationFee = total.multiply(new BigDecimal("0.20"))
                         .setScale(2, RoundingMode.HALF_UP);
                 paymentStatus = "PARTIALLY_REFUNDED";
-            } else if (hoursUntilPickup > 0) {
+            } else if (daysUntilPickup == 0) {
+                // Same day as pickup — 50% fee
                 cancellationFee = total.multiply(new BigDecimal("0.50"))
                         .setScale(2, RoundingMode.HALF_UP);
                 paymentStatus = "PARTIALLY_REFUNDED";
             } else {
-                // Pickup time has already passed
+                // Pickup date has passed — non-refundable
                 cancellationFee = total;
                 paymentStatus = "NON_REFUNDABLE";
             }

@@ -43,6 +43,7 @@ public class AuthFilter implements Filter {
                 || path.equals("/vehicles")
                 || path.equals("/blogs")
                 || path.equals("/about")
+                || path.equals("/policy")
                 || path.startsWith("/static/");
 
         boolean protectedPath = path.startsWith("/dashboard")
