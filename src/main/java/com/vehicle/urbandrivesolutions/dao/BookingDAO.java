@@ -213,6 +213,26 @@ public class BookingDAO {
     }
 
     /**
+     * Marks all CONFIRMED bookings whose return_date is before today as COMPLETED.
+     * Called by the startup scheduler; returns the number of rows updated.
+     */
+    public int completeExpiredBookings() {
+        String sql = "UPDATE bookings " +
+                     "SET booking_status = 'COMPLETED' " +
+                     "WHERE booking_status = 'CONFIRMED' " +
+                     "AND return_date < CURDATE()";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            return ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error completing expired bookings.", e);
+        }
+    }
+
+    /**
      * Marks a booking as CANCELLED, stores the cancellation_fee and
      * records cancelled_at = current timestamp.
      */
