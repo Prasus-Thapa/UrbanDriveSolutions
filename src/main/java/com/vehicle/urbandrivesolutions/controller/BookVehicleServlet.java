@@ -41,7 +41,7 @@ public class BookVehicleServlet extends HttpServlet {
             return;
         }
 
-        if (!"AVAILABLE".equalsIgnoreCase(vehicle.getAvailabilityStatus())) {
+        if ("MAINTENANCE".equalsIgnoreCase(vehicle.getAvailabilityStatus())) {
             forwardVehicleUnavailable(request, response);
             return;
         }
@@ -171,8 +171,8 @@ public class BookVehicleServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setAttribute("errorCode", "409");
-        request.setAttribute("errorTitle", "Vehicle Not Available");
-        request.setAttribute("errorMessage", "This vehicle is not available for booking.");
+        request.setAttribute("errorTitle", "Vehicle Under Maintenance");
+        request.setAttribute("errorMessage", "This vehicle is currently under maintenance and cannot be booked.");
         request.setAttribute("buttonText", "Browse Vehicles");
         request.setAttribute("buttonUrl", request.getContextPath() + "/vehicles");
         request.getRequestDispatcher("/error").forward(request, response);

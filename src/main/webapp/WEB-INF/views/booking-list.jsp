@@ -51,6 +51,8 @@
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home">Home</a>
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
+            <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+            <a href="${pageContext.request.contextPath}/about">About Us</a>
             <a href="${pageContext.request.contextPath}/bookings" class="active">My Bookings</a>
             <a href="${pageContext.request.contextPath}/payments">My Payments</a>
             <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
@@ -109,6 +111,7 @@
                             <th>Pickup</th>
                             <th>Return</th>
                             <th>Amount</th>
+                            <th>Cancel Fee</th>
                             <th>Status</th>
                             <c:if test="${not isAdmin}"><th class="t-right">Action</th></c:if>
                         </tr>
@@ -123,6 +126,16 @@
                                 <td class="td-muted">${booking.pickupDate}</td>
                                 <td class="td-muted">${booking.returnDate}</td>
                                 <td class="td-bold">Rs. ${booking.totalAmount}</td>
+                                <td class="td-bold">
+                                    <c:choose>
+                                        <c:when test="${booking.bookingStatus == 'CANCELLED' and booking.cancellationFee != null}">
+                                            <span style="color:#dc2626;">Rs. ${booking.cancellationFee}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span style="color:var(--n-400);">—</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${booking.bookingStatus == 'CONFIRMED'}"><span class="badge badge-confirmed">Confirmed</span></c:when>
@@ -135,14 +148,39 @@
                                 <c:if test="${not isAdmin}">
                                     <td class="t-right">
                                         <c:choose>
+                                            <%-- PENDING: offer Pay Now + Cancel --%>
                                             <c:when test="${booking.bookingStatus == 'PENDING'}">
-                                                <a href="${pageContext.request.contextPath}/payments/pay?bookingId=${booking.bookingId}"
-                                                   class="btn btn-primary btn-sm">
-                                                    <span class="material-symbols-outlined" style="font-size:14px;">payments</span>Pay Now
-                                                </a>
+                                                <div style="display:flex;gap:0.4rem;justify-content:flex-end;flex-wrap:wrap;">
+                                                    <a href="${pageContext.request.contextPath}/payments/pay?bookingId=${booking.bookingId}"
+                                                       class="btn btn-primary btn-sm">
+                                                        <span class="material-symbols-outlined" style="font-size:14px;">payments</span>Pay Now
+                                                    </a>
+                                                    <form action="${pageContext.request.contextPath}/bookings/cancel"
+                                                          method="post" style="display:inline;"
+                                                          onsubmit="return confirm('Cancel booking #${booking.bookingId}?\nNo payment has been collected, so no fee applies.');">
+                                                        <input type="hidden" name="bookingId" value="${booking.bookingId}"/>
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <span class="material-symbols-outlined" style="font-size:14px;">cancel</span>Cancel
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </c:when>
+                                            <%-- CONFIRMED: offer Cancel with fee warning --%>
+                                            <c:when test="${booking.bookingStatus == 'CONFIRMED'}">
+                                                <form action="${pageContext.request.contextPath}/bookings/cancel"
+                                                      method="post" style="display:inline;"
+                                                      onsubmit="return confirm('Cancel confirmed booking #${booking.bookingId}?\nA cancellation fee will apply based on how soon the pickup date is.');">
+                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}"/>
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <span class="material-symbols-outlined" style="font-size:14px;">cancel</span>Cancel
+                                                    </button>
+                                                </form>
+                                            </c:when>
+                                            <c:when test="${booking.bookingStatus == 'CANCELLED'}">
+                                                <span style="font-size:0.75rem;color:var(--n-400);font-weight:500;">Cancelled</span>
                                             </c:when>
                                             <c:otherwise>
-                                                <span style="font-size:0.75rem; color:var(--n-400); font-weight:500;">Payment Complete</span>
+                                                <span style="font-size:0.75rem;color:var(--n-400);font-weight:500;">Completed</span>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>

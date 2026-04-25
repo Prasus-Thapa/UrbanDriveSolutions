@@ -149,6 +149,25 @@ public class PaymentDAO {
         }
     }
 
+    /**
+     * Updates the payment_status for the payment record linked to bookingId.
+     * Used during cancellation to reflect the refund outcome.
+     */
+    public void updatePaymentRefundStatus(int bookingId, String paymentStatus) {
+        String sql = "UPDATE payments SET payment_status = ? WHERE booking_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, paymentStatus);
+            ps.setInt(2, bookingId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating payment refund status.", e);
+        }
+    }
+
     private Payment mapPayment(ResultSet resultSet) throws SQLException {
         Payment payment = new Payment();
         payment.setPaymentId(resultSet.getInt("payment_id"));

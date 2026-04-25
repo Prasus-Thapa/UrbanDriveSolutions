@@ -47,6 +47,8 @@
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home">Home</a>
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
+            <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+            <a href="${pageContext.request.contextPath}/about">About Us</a>
             <a href="${pageContext.request.contextPath}/bookings">My Bookings</a>
             <a href="${pageContext.request.contextPath}/payments" class="active">My Payments</a>
             <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
@@ -120,9 +122,27 @@
                                 <td class="td-muted">${empty payment.paymentMethod ? '—' : payment.paymentMethod}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${payment.paymentStatus == 'PAID'}"><span class="badge badge-paid">Paid</span></c:when>
-                                        <c:when test="${payment.paymentStatus == 'PENDING'}"><span class="badge badge-pending">Pending</span></c:when>
-                                        <c:otherwise><span class="badge badge-completed">${payment.paymentStatus}</span></c:otherwise>
+                                        <c:when test="${payment.paymentStatus == 'PAID'}">
+                                            <span class="badge badge-confirmed">Paid</span>
+                                        </c:when>
+                                        <c:when test="${payment.paymentStatus == 'PENDING'}">
+                                            <span class="badge badge-pending">Pending</span>
+                                        </c:when>
+                                        <c:when test="${payment.paymentStatus == 'REFUNDED'}">
+                                            <span class="badge badge-completed">Refunded</span>
+                                        </c:when>
+                                        <c:when test="${payment.paymentStatus == 'PARTIALLY_REFUNDED'}">
+                                            <span class="badge badge-pending" style="background:#f59e0b20;color:#b45309;border-color:#f59e0b;">Partial Refund</span>
+                                        </c:when>
+                                        <c:when test="${payment.paymentStatus == 'NON_REFUNDABLE'}">
+                                            <span class="badge badge-cancelled">Non-Refundable</span>
+                                        </c:when>
+                                        <c:when test="${payment.paymentStatus == 'FAILED'}">
+                                            <span class="badge badge-cancelled">Failed</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge badge-completed">${payment.paymentStatus}</span>
+                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                                 <td class="td-mono">${empty payment.transactionCode ? '—' : payment.transactionCode}</td>

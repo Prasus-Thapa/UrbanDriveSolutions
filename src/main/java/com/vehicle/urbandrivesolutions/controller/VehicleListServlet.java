@@ -22,12 +22,14 @@ public class VehicleListServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        User loggedInUser = (session != null) ? (User) session.getAttribute("loggedInUser") : null;
 
-        boolean isAdmin = "ADMIN".equalsIgnoreCase(loggedInUser.getRole());
+        boolean isAdmin = loggedInUser != null && "ADMIN".equalsIgnoreCase(loggedInUser.getRole());
+        boolean loggedIn = loggedInUser != null;
         List<Vehicle> vehicles = isAdmin ? vehicleDAO.getAllVehicles() : vehicleDAO.getAvailableVehicles();
 
         request.setAttribute("isAdmin", isAdmin);
+        request.setAttribute("loggedIn", loggedIn);
         request.setAttribute("vehicles", vehicles);
         request.getRequestDispatcher("/WEB-INF/views/vehicle-list.jsp").forward(request, response);
     }

@@ -1,6 +1,7 @@
 package com.vehicle.urbandrivesolutions.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class Booking {
@@ -11,6 +12,8 @@ public class Booking {
     private LocalDate returnDate;
     private BigDecimal totalAmount;
     private String bookingStatus;
+    private BigDecimal cancellationFee;
+    private Timestamp cancelledAt;
     private String customerName;
     private String vehicleName;
     private String registrationNumber;
@@ -72,6 +75,22 @@ public class Booking {
 
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
+    }
+
+    public BigDecimal getCancellationFee() {
+        return cancellationFee;
+    }
+
+    public void setCancellationFee(BigDecimal cancellationFee) {
+        this.cancellationFee = cancellationFee;
+    }
+
+    public Timestamp getCancelledAt() {
+        return cancelledAt;
+    }
+
+    public void setCancelledAt(Timestamp cancelledAt) {
+        this.cancelledAt = cancelledAt;
     }
 
     public String getCustomerName() {

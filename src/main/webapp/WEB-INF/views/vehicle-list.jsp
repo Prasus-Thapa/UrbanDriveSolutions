@@ -45,7 +45,7 @@
 <main class="page-sidebar">
 </c:when>
 
-<%-- ═══ USER VIEW ═══ --%>
+<%-- ═══ USER / GUEST VIEW ═══ --%>
 <c:otherwise>
 <nav class="top-nav">
     <div class="top-nav-inner">
@@ -53,12 +53,24 @@
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home">Home</a>
             <a href="${pageContext.request.contextPath}/vehicles" class="active">Browse Fleet</a>
-            <a href="${pageContext.request.contextPath}/bookings">My Bookings</a>
-            <a href="${pageContext.request.contextPath}/payments">My Payments</a>
-            <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+            <a href="${pageContext.request.contextPath}/about">About Us</a>
+            <c:if test="${loggedIn}">
+                <a href="${pageContext.request.contextPath}/bookings">My Bookings</a>
+                <a href="${pageContext.request.contextPath}/payments">My Payments</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+            </c:if>
         </div>
         <div class="nav-actions">
-            <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-md">Logout</a>
+            <c:choose>
+                <c:when test="${loggedIn}">
+                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-md">Logout</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/login"    class="btn btn-outline btn-md">Login</a>
+                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary btn-md">Register</a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </nav>
@@ -198,8 +210,16 @@
                                         <p class="v-price">Rs. ${vehicle.pricePerDay}</p>
                                     </div>
                                     <c:if test="${vehicle.availabilityStatus == 'AVAILABLE'}">
-                                        <a href="${pageContext.request.contextPath}/bookings/add?vehicleId=${vehicle.vehicleId}"
-                                           class="btn btn-primary btn-sm">Book Now</a>
+                                        <c:choose>
+                                            <c:when test="${loggedIn}">
+                                                <a href="${pageContext.request.contextPath}/bookings/add?vehicleId=${vehicle.vehicleId}"
+                                                   class="btn btn-primary btn-sm">Book Now</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="${pageContext.request.contextPath}/login"
+                                                   class="btn btn-primary btn-sm">Book Now</a>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:if>
                                 </div>
                             </div>

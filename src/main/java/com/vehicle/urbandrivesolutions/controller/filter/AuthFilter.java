@@ -40,10 +40,13 @@ public class AuthFilter implements Filter {
                 || path.equals("/logout")
                 || path.equals("/db-check")
                 || path.equals("/error")
+                || path.equals("/vehicles")
+                || path.equals("/blogs")
+                || path.equals("/about")
                 || path.startsWith("/static/");
 
         boolean protectedPath = path.startsWith("/dashboard")
-                || path.startsWith("/vehicles")
+                || path.startsWith("/vehicles/")
                 || path.startsWith("/bookings")
                 || path.startsWith("/payments");
 

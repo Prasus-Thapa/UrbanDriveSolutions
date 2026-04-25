@@ -20,6 +20,8 @@
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home" class="active">Home</a>
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
+            <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
+            <a href="${pageContext.request.contextPath}/about">About Us</a>
             <c:if test="${not empty sessionScope.loggedInUser}">
                 <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
             </c:if>
@@ -59,7 +61,28 @@
             Experience Nepal's most curated fleet of premium vehicles. From city commutes to mountain escapes —
             Urban Drive Solutions delivers excellence.
         </p>
-        <div class="hero-actions">
+
+        <!-- ── Date Search Widget ── -->
+        <div style="background:#fff; border:1px solid #e5e7eb; border-radius:1rem; padding:1.5rem; margin-top:2rem; max-width:620px; box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#6b7280; margin-bottom:1rem;">
+                Find Your Vehicle
+            </p>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-end;">
+                <div style="flex:1; min-width:140px;">
+                    <label for="homePickup" style="display:block; font-size:0.75rem; font-weight:600; margin-bottom:0.375rem; color:#111;">Pickup Date</label>
+                    <input id="homePickup" type="date" class="form-input" style="color:#111; background:#fff;"/>
+                </div>
+                <div style="flex:1; min-width:140px;">
+                    <label for="homeReturn" style="display:block; font-size:0.75rem; font-weight:600; margin-bottom:0.375rem; color:#111;">Return Date</label>
+                    <input id="homeReturn" type="date" class="form-input" style="color:#111; background:#fff;"/>
+                </div>
+                <button onclick="handleVehicleSearch()" class="btn btn-primary btn-lg" style="white-space:nowrap;">
+                    <span class="material-symbols-outlined">search</span>Search Vehicle
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-actions" style="margin-top:1.5rem;">
             <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-primary btn-lg">
                 <span class="material-symbols-outlined">directions_car</span>Browse the Fleet
             </a>
@@ -126,5 +149,44 @@
     </div>
 </footer>
 
+<script>
+(function () {
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('homePickup').min = today;
+    document.getElementById('homeReturn').min = today;
+
+    document.getElementById('homePickup').addEventListener('change', function () {
+        if (this.value) {
+            var next = new Date(this.value);
+            next.setDate(next.getDate() + 1);
+            document.getElementById('homeReturn').min = next.toISOString().split('T')[0];
+            if (document.getElementById('homeReturn').value <= this.value) {
+                document.getElementById('homeReturn').value = '';
+            }
+        }
+    });
+})();
+
+function handleVehicleSearch() {
+    var pickup  = document.getElementById('homePickup').value;
+    var ret     = document.getElementById('homeReturn').value;
+    if (!pickup || !ret) {
+        alert('Please select both pickup and return dates.');
+        return;
+    }
+    if (ret <= pickup) {
+        alert('Return date must be after pickup date.');
+        return;
+    }
+    <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+            window.location.href = '${pageContext.request.contextPath}/vehicles';
+        </c:when>
+        <c:otherwise>
+            window.location.href = '${pageContext.request.contextPath}/login';
+        </c:otherwise>
+    </c:choose>
+}
+</script>
 </body>
 </html>
