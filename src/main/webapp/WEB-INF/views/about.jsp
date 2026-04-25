@@ -139,6 +139,96 @@
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-body">
+                    <span class="material-symbols-outlined" style="font-size:2rem; margin-bottom:1rem; display:block;">eco</span>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:0.5rem;">Sustainability</h3>
+                    <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                        We are committed to growing our fleet with fuel-efficient and electric vehicles, reducing our carbon footprint one rental at a time.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Team -->
+    <div style="margin-bottom:3rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.4rem;">The People Behind It</p>
+        <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.75rem; font-weight:800; letter-spacing:-0.03em; margin-bottom:1.75rem;">Meet Our Team</h2>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.25rem;">
+
+            <!-- Prasus Thapa -->
+            <div class="card" style="text-align:center;">
+                <div class="card-body" style="padding:2rem 1.5rem;">
+                    <div style="width:64px; height:64px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                        <span class="material-symbols-outlined" style="font-size:1.75rem; color:var(--n-400);">person</span>
+                    </div>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem;">Prasus Thapa</h3>
+                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Founder & CEO</p>
+                    <p style="font-size:0.85rem; color:var(--n-500); line-height:1.65;">
+                        Prasus leads the company's vision and strategy, driving Urban Drive Solutions from a startup idea into Nepal's most trusted vehicle rental platform.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Roshan Bhandari -->
+            <div class="card" style="text-align:center;">
+                <div class="card-body" style="padding:2rem 1.5rem;">
+                    <div style="width:64px; height:64px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                        <span class="material-symbols-outlined" style="font-size:1.75rem; color:var(--n-400);">person</span>
+                    </div>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem;">Roshan Bhandari</h3>
+                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Chief Technology Officer</p>
+                    <p style="font-size:0.85rem; color:var(--n-500); line-height:1.65;">
+                        Roshan architects the platform's core systems, ensuring every booking, payment, and feature runs reliably and securely at scale.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rahil Kunwar -->
+            <div class="card" style="text-align:center;">
+                <div class="card-body" style="padding:2rem 1.5rem;">
+                    <div style="width:64px; height:64px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                        <span class="material-symbols-outlined" style="font-size:1.75rem; color:var(--n-400);">person</span>
+                    </div>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem;">Rahil Kunwar</h3>
+                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Head of Operations</p>
+                    <p style="font-size:0.85rem; color:var(--n-500); line-height:1.65;">
+                        Rahil oversees day-to-day fleet management, vehicle inspections, and logistics — making sure every rental handover is smooth and on time.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rajesh Adhikari -->
+            <div class="card" style="text-align:center;">
+                <div class="card-body" style="padding:2rem 1.5rem;">
+                    <div style="width:64px; height:64px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                        <span class="material-symbols-outlined" style="font-size:1.75rem; color:var(--n-400);">person</span>
+                    </div>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem;">Rajesh Adhikari</h3>
+                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Finance Manager</p>
+                    <p style="font-size:0.85rem; color:var(--n-500); line-height:1.65;">
+                        Rajesh manages financial planning, payment integrations, and pricing strategy — keeping the business profitable while rates remain fair for customers.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Sachin Dev Ale -->
+            <div class="card" style="text-align:center;">
+                <div class="card-body" style="padding:2rem 1.5rem;">
+                    <div style="width:64px; height:64px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                        <span class="material-symbols-outlined" style="font-size:1.75rem; color:var(--n-400);">person</span>
+                    </div>
+                    <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem;">Sachin Dev Ale</h3>
+                    <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.75rem;">Customer Experience Lead</p>
+                    <p style="font-size:0.85rem; color:var(--n-500); line-height:1.65;">
+                        Sachin champions the customer journey end-to-end — from first inquiry to post-rental feedback — ensuring every interaction reflects Urban Drive's standards.
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 

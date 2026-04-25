@@ -25,7 +25,7 @@
                 <nav class="sidebar-nav">
                     <a href="${pageContext.request.contextPath}/home" class="sidebar-link"><span
                             class="material-symbols-outlined">home</span><span>Home</span></a>
-                    <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-link"><span
+                    <a href="${pageContext.request.contextPath}/dashboard" class="sidebar-link"><span
                             class="material-symbols-outlined">dashboard</span><span>Overview</span></a>
                     <a href="${pageContext.request.contextPath}/vehicles" class="sidebar-link active"><span
                             class="material-symbols-outlined">directions_car</span><span>Fleet</span></a>

@@ -26,7 +26,7 @@
     </div>
     <nav class="sidebar-nav">
         <a href="${pageContext.request.contextPath}/home"            class="sidebar-link"><span class="material-symbols-outlined">home</span><span>Home</span></a>
-        <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-link"><span class="material-symbols-outlined">dashboard</span><span>Overview</span></a>
+        <a href="${pageContext.request.contextPath}/dashboard" class="sidebar-link"><span class="material-symbols-outlined">dashboard</span><span>Overview</span></a>
         <a href="${pageContext.request.contextPath}/vehicles"        class="sidebar-link"><span class="material-symbols-outlined">directions_car</span><span>Fleet</span></a>
         <a href="${pageContext.request.contextPath}/bookings"        class="sidebar-link"><span class="material-symbols-outlined">calendar_today</span><span>Bookings</span></a>
         <a href="${pageContext.request.contextPath}/payments"        class="sidebar-link active"><span class="material-symbols-outlined">payments</span><span>Revenue</span></a>
@@ -164,7 +164,7 @@
         <div class="footer-links">
             <c:choose>
                 <c:when test="${isAdmin}">
-                    <a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
+                    <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/home">Home</a>

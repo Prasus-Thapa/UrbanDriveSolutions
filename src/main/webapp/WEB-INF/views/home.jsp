@@ -62,7 +62,8 @@
             Urban Drive Solutions delivers excellence.
         </p>
 
-        <!-- ── Date Search Widget ── -->
+        <!-- ── Date Search Widget (guests and customers only) ── -->
+        <c:if test="${sessionScope.loggedInUser.role ne 'ADMIN'}">
         <div style="background:#fff; border:1px solid #e5e7eb; border-radius:1rem; padding:1.5rem; margin-top:2rem; max-width:620px; box-shadow:0 2px 12px rgba(0,0,0,0.06);">
             <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#6b7280; margin-bottom:1rem;">
                 Find Your Vehicle
@@ -81,6 +82,7 @@
                 </button>
             </div>
         </div>
+        </c:if>
 
         <div class="hero-actions" style="margin-top:1.5rem;">
             <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-primary btn-lg">

@@ -361,7 +361,7 @@
         <div class="footer-links">
             <c:choose>
                 <c:when test="${isAdmin}">
-                    <a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
+                    <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                     <a href="${pageContext.request.contextPath}/bookings">Bookings</a>
                 </c:when>
                 <c:otherwise>
