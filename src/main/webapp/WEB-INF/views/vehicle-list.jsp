@@ -17,6 +17,31 @@
     </c:choose>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+    <style>
+        /* ── Filter sidebar layout ── */
+        .fleet-layout  { display:flex; gap:1.75rem; align-items:flex-start; }
+        .fleet-filter  { width:260px; flex-shrink:0; position:sticky; top:1.5rem; background:#fff; border:1px solid #e5e7eb; border-radius:0.875rem; padding:1.5rem; }
+        .fleet-results { flex:1; min-width:0; }
+
+        /* ── Filter components ── */
+        .filter-section { border-bottom:1px solid #f3f4f6; padding-bottom:1.25rem; margin-bottom:1.25rem; }
+        .filter-section:last-of-type { border-bottom:none; padding-bottom:0; margin-bottom:0; }
+        .filter-title { font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#9ca3af; margin-bottom:0.875rem; }
+
+        /* ── Seat pills ── */
+        .seat-option input[type=radio] { display:none; }
+        .seat-option input[type=radio]:checked + .seat-label { background:#000; color:#fff; border-color:#000; }
+        .seat-label { display:inline-block; padding:0.35rem 0.85rem; border:1.5px solid #e5e7eb; border-radius:2rem; font-size:0.78rem; font-weight:600; cursor:pointer; color:#111; transition:border-color .15s, background .15s; }
+        .seat-label:hover { border-color:#000; }
+
+        /* ── Price slider ── */
+        .price-slider { width:100%; accent-color:#000; margin-top:0.5rem; cursor:pointer; }
+
+        @media (max-width: 768px) {
+            .fleet-layout { flex-direction:column; }
+            .fleet-filter { width:100%; position:static; }
+        }
+    </style>
 </head>
 <body>
 
@@ -106,98 +131,123 @@
         </c:if>
     </div>
 
-    <!-- Messages -->
-    <c:if test="${not empty successMessage}">
-        <div class="alert alert-success"><span class="material-symbols-outlined">check_circle</span>${successMessage}</div>
-    </c:if>
-    <c:if test="${not empty errorMessage}">
-        <div class="alert alert-error"><span class="material-symbols-outlined">error</span>${errorMessage}</div>
-    </c:if>
+    <%-- ══════════════════════════════════════════════════════════
+         USER / GUEST — two-column layout: filter left, cards right
+         ══════════════════════════════════════════════════════════ --%>
+    <c:if test="${not isAdmin}">
+    <div class="fleet-layout">
 
-    <!-- Empty State -->
-    <c:if test="${empty vehicles}">
-        <div class="empty-state">
-            <span class="material-symbols-outlined empty-icon">garage</span>
-            <p class="empty-title">No vehicles found</p>
-            <c:if test="${isAdmin}">
-                <a href="${pageContext.request.contextPath}/vehicles/add" class="btn btn-primary btn-md">Add First Vehicle</a>
-            </c:if>
-        </div>
-    </c:if>
+        <%-- ── LEFT: Filter Sidebar ── --%>
+        <aside class="fleet-filter">
+            <form method="get" action="${pageContext.request.contextPath}/vehicles">
 
-    <!-- Vehicles -->
-    <c:if test="${not empty vehicles}">
-        <c:choose>
-            <%-- ADMIN TABLE --%>
-            <c:when test="${isAdmin}">
-                <div class="table-wrapper">
-                    <div class="table-scroll">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Vehicle</th>
-                                    <th>Type</th>
-                                    <th>Reg. No.</th>
-                                    <th>Color</th>
-                                    <th>Seats</th>
-                                    <th>Price/Day</th>
-                                    <th>Status</th>
-                                    <th class="t-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="vehicle" items="${vehicles}">
-                                    <tr>
-                                        <td class="td-id">#${vehicle.vehicleId}</td>
-                                        <td class="td-bold">${vehicle.brand} ${vehicle.model}</td>
-                                        <td class="td-muted">${vehicle.vehicleType}</td>
-                                        <td class="td-mono">${vehicle.registrationNumber}</td>
-                                        <td class="td-muted">${vehicle.color}</td>
-                                        <td class="td-muted">${vehicle.seats}</td>
-                                        <td class="td-bold">Rs. ${vehicle.pricePerDay}/day</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${vehicle.availabilityStatus == 'AVAILABLE'}"><span class="badge badge-available">Available</span></c:when>
-                                                <c:when test="${vehicle.availabilityStatus == 'BOOKED'}"><span class="badge badge-booked">Booked</span></c:when>
-                                                <c:when test="${vehicle.availabilityStatus == 'MAINTENANCE'}"><span class="badge badge-maintenance">Maintenance</span></c:when>
-                                                <c:otherwise><span class="badge badge-maintenance">${vehicle.availabilityStatus}</span></c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td class="t-right">
-                                            <div class="td-actions">
-                                                <a href="${pageContext.request.contextPath}/vehicles/edit?id=${vehicle.vehicleId}" class="tbl-link">Edit</a>
-                                                <form action="${pageContext.request.contextPath}/vehicles/delete" method="post"
-                                                      style="display:inline;" onsubmit="return confirm('Delete this vehicle?')">
-                                                    <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
-                                                    <button type="submit" class="tbl-link danger">Delete</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
+                <%-- Vehicle Type --%>
+                <div class="filter-section">
+                    <p class="filter-title">Vehicle Type</p>
+                    <select name="vehicleType" class="form-input">
+                        <option value="">All Types</option>
+                        <c:forEach var="type" items="${vehicleTypes}">
+                            <option value="${type}" <c:if test="${filterVehicleType == type}">selected</c:if>>${type}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <%-- Brand --%>
+                <div class="filter-section">
+                    <p class="filter-title">Brand</p>
+                    <select name="brand" class="form-input">
+                        <option value="">All Brands</option>
+                        <c:forEach var="b" items="${brands}">
+                            <option value="${b}" <c:if test="${filterBrand == b}">selected</c:if>>${b}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <%-- Seats --%>
+                <div class="filter-section">
+                    <p class="filter-title">Seats</p>
+                    <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                        <label class="seat-option">
+                            <input type="radio" name="seats" value="" <c:if test="${empty filterSeats}">checked</c:if>/>
+                            <span class="seat-label">All</span>
+                        </label>
+                        <label class="seat-option">
+                            <input type="radio" name="seats" value="2" <c:if test="${filterSeats == 2}">checked</c:if>/>
+                            <span class="seat-label">2</span>
+                        </label>
+                        <label class="seat-option">
+                            <input type="radio" name="seats" value="4" <c:if test="${filterSeats == 4}">checked</c:if>/>
+                            <span class="seat-label">4</span>
+                        </label>
+                        <label class="seat-option">
+                            <input type="radio" name="seats" value="6" <c:if test="${filterSeats == 6}">checked</c:if>/>
+                            <span class="seat-label">6</span>
+                        </label>
+                        <label class="seat-option">
+                            <input type="radio" name="seats" value="8" <c:if test="${filterSeats == 8}">checked</c:if>/>
+                            <span class="seat-label">8</span>
+                        </label>
                     </div>
                 </div>
-            </c:when>
 
-            <%-- USER CARD GRID --%>
-            <c:otherwise>
+                <%-- Price per day --%>
+                <div class="filter-section">
+                    <p class="filter-title">Price per day</p>
+                    <p style="font-size:0.875rem; font-weight:700; color:#111; margin-bottom:0.25rem;">
+                        Rs. <span id="priceVal">${filterMaxPrice}</span>
+                    </p>
+                    <input type="range" name="maxPrice" id="priceSlider"
+                           class="price-slider"
+                           min="0"
+                           max="${overallMaxPrice}"
+                           step="1"
+                           value="${filterMaxPrice}"
+                           oninput="document.getElementById('priceVal').textContent = Math.round(this.value)"/>
+                    <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#9ca3af; margin-top:0.3rem;">
+                        <span>Rs. 0</span>
+                        <span>Rs. ${overallMaxPrice}</span>
+                    </div>
+                </div>
+
+                <%-- Actions --%>
+                <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:1.25rem;">
+                    <button type="submit" class="btn btn-primary btn-md btn-full">
+                        <span class="material-symbols-outlined">search</span>Search
+                    </button>
+                    <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-outline btn-md btn-full" style="text-align:center;">
+                        Reset Filters
+                    </a>
+                </div>
+
+            </form>
+        </aside>
+
+        <%-- ── RIGHT: Results ── --%>
+        <div class="fleet-results">
+
+            <c:if test="${not empty successMessage}">
+                <div class="alert alert-success"><span class="material-symbols-outlined">check_circle</span>${successMessage}</div>
+            </c:if>
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-error"><span class="material-symbols-outlined">error</span>${errorMessage}</div>
+            </c:if>
+
+            <c:if test="${empty vehicles}">
+                <div class="empty-state">
+                    <span class="material-symbols-outlined empty-icon">garage</span>
+                    <p class="empty-title">No vehicles match your filters</p>
+                    <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-outline btn-md">Clear Filters</a>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty vehicles}">
                 <div class="vehicle-grid">
                     <c:forEach var="vehicle" items="${vehicles}">
                         <div class="v-card">
                             <div class="v-card-img">
                                 <span class="material-symbols-outlined">directions_car</span>
                                 <span class="v-card-status">
-                                    <c:choose>
-                                        <c:when test="${vehicle.availabilityStatus == 'AVAILABLE'}">
-                                            <span class="badge badge-available">Available</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="badge badge-unavailable">Unavailable</span>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <span class="badge badge-available">Available</span>
                                 </span>
                             </div>
                             <div class="v-card-body">
@@ -209,25 +259,97 @@
                                         <p class="v-price-label">Per day</p>
                                         <p class="v-price">Rs. ${vehicle.pricePerDay}</p>
                                     </div>
-                                    <c:if test="${vehicle.availabilityStatus == 'AVAILABLE'}">
-                                        <c:choose>
-                                            <c:when test="${loggedIn}">
-                                                <a href="${pageContext.request.contextPath}/bookings/add?vehicleId=${vehicle.vehicleId}"
-                                                   class="btn btn-primary btn-sm">Book Now</a>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a href="${pageContext.request.contextPath}/login"
-                                                   class="btn btn-primary btn-sm">Book Now</a>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${loggedIn}">
+                                            <a href="${pageContext.request.contextPath}/bookings/add?vehicleId=${vehicle.vehicleId}"
+                                               class="btn btn-primary btn-sm">Book Now</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/login"
+                                               class="btn btn-primary btn-sm">Book Now</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
-            </c:otherwise>
-        </c:choose>
+            </c:if>
+
+        </div><%-- end fleet-results --%>
+    </div><%-- end fleet-layout --%>
+    </c:if>
+
+    <%-- ══════════════════════════════
+         ADMIN — full-width table view
+         ══════════════════════════════ --%>
+    <c:if test="${isAdmin}">
+        <c:if test="${not empty successMessage}">
+            <div class="alert alert-success"><span class="material-symbols-outlined">check_circle</span>${successMessage}</div>
+        </c:if>
+        <c:if test="${not empty errorMessage}">
+            <div class="alert alert-error"><span class="material-symbols-outlined">error</span>${errorMessage}</div>
+        </c:if>
+
+        <c:if test="${empty vehicles}">
+            <div class="empty-state">
+                <span class="material-symbols-outlined empty-icon">garage</span>
+                <p class="empty-title">No vehicles found</p>
+                <a href="${pageContext.request.contextPath}/vehicles/add" class="btn btn-primary btn-md">Add First Vehicle</a>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty vehicles}">
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Vehicle</th>
+                                <th>Type</th>
+                                <th>Reg. No.</th>
+                                <th>Color</th>
+                                <th>Seats</th>
+                                <th>Price/Day</th>
+                                <th>Status</th>
+                                <th class="t-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="vehicle" items="${vehicles}">
+                                <tr>
+                                    <td class="td-id">#${vehicle.vehicleId}</td>
+                                    <td class="td-bold">${vehicle.brand} ${vehicle.model}</td>
+                                    <td class="td-muted">${vehicle.vehicleType}</td>
+                                    <td class="td-mono">${vehicle.registrationNumber}</td>
+                                    <td class="td-muted">${vehicle.color}</td>
+                                    <td class="td-muted">${vehicle.seats}</td>
+                                    <td class="td-bold">Rs. ${vehicle.pricePerDay}/day</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${vehicle.availabilityStatus == 'AVAILABLE'}"><span class="badge badge-available">Available</span></c:when>
+                                            <c:when test="${vehicle.availabilityStatus == 'MAINTENANCE'}"><span class="badge badge-maintenance">Maintenance</span></c:when>
+                                            <c:otherwise><span class="badge badge-maintenance">${vehicle.availabilityStatus}</span></c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="t-right">
+                                        <div class="td-actions">
+                                            <a href="${pageContext.request.contextPath}/vehicles/edit?id=${vehicle.vehicleId}" class="tbl-link">Edit</a>
+                                            <form action="${pageContext.request.contextPath}/vehicles/delete" method="post"
+                                                  style="display:inline;" onsubmit="return confirm('Delete this vehicle?')">
+                                                <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
+                                                <button type="submit" class="tbl-link danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </c:if>
     </c:if>
 
     <!-- Footer -->
@@ -250,6 +372,13 @@
         </div>
     </div>
 
+<script>
+    var slider = document.getElementById('priceSlider');
+    var display = document.getElementById('priceVal');
+    if (slider && display) {
+        display.textContent = Math.round(slider.value);
+    }
+</script>
 </main>
 </body>
 </html>

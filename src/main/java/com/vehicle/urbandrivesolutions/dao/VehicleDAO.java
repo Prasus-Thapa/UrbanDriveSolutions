@@ -3,6 +3,7 @@ package com.vehicle.urbandrivesolutions.dao;
 import com.vehicle.urbandrivesolutions.entity.Vehicle;
 import com.vehicle.urbandrivesolutions.utils.DBConnection;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -128,6 +129,95 @@ public class VehicleDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting vehicle.", e);
         }
+    }
+
+    // ── Filter support ──────────────────────────────────────────────────────
+
+    public List<String> getDistinctVehicleTypes() {
+        String sql = "SELECT DISTINCT vehicle_type FROM vehicles WHERE availability_status = 'AVAILABLE' ORDER BY vehicle_type ASC";
+        List<String> types = new ArrayList<>();
+        try (Connection c = DBConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) types.add(rs.getString("vehicle_type"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching vehicle types.", e);
+        }
+        return types;
+    }
+
+    public List<String> getDistinctBrands() {
+        String sql = "SELECT DISTINCT brand FROM vehicles WHERE availability_status = 'AVAILABLE' ORDER BY brand ASC";
+        List<String> brands = new ArrayList<>();
+        try (Connection c = DBConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) brands.add(rs.getString("brand"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching brands.", e);
+        }
+        return brands;
+    }
+
+    public BigDecimal getMaxPricePerDay() {
+        String sql = "SELECT COALESCE(MAX(price_per_day), 1000) FROM vehicles WHERE availability_status = 'AVAILABLE'";
+        try (Connection c = DBConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return rs.getBigDecimal(1);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching max price.", e);
+        }
+        return new BigDecimal("1000");
+    }
+
+    /**
+     * Returns available vehicles matching all non-null filter criteria.
+     * Null/empty parameters mean "no filter on that field".
+     */
+    public List<Vehicle> getFilteredVehicles(String vehicleType, String brand, BigDecimal maxPrice, Integer seats) {
+        StringBuilder sql = new StringBuilder(
+            "SELECT vehicle_id, brand, model, vehicle_type, registration_number, color, seats, price_per_day, availability_status " +
+            "FROM vehicles WHERE availability_status = 'AVAILABLE'");
+
+        List<Object> params = new ArrayList<>();
+
+        if (vehicleType != null && !vehicleType.isEmpty()) {
+            sql.append(" AND vehicle_type = ?");
+            params.add(vehicleType);
+        }
+        if (brand != null && !brand.isEmpty()) {
+            sql.append(" AND brand = ?");
+            params.add(brand);
+        }
+        if (maxPrice != null) {
+            sql.append(" AND price_per_day <= ?");
+            params.add(maxPrice);
+        }
+        if (seats != null) {
+            sql.append(" AND seats = ?");
+            params.add(seats);
+        }
+        sql.append(" ORDER BY vehicle_id DESC");
+
+        List<Vehicle> vehicles = new ArrayList<>();
+        try (Connection c = DBConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                Object p = params.get(i);
+                if (p instanceof String)     ps.setString(i + 1, (String) p);
+                else if (p instanceof BigDecimal) ps.setBigDecimal(i + 1, (BigDecimal) p);
+                else if (p instanceof Integer)    ps.setInt(i + 1, (Integer) p);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) vehicles.add(mapVehicle(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching filtered vehicles.", e);
+        }
+        return vehicles;
     }
 
     private Vehicle mapVehicle(ResultSet resultSet) throws SQLException {
