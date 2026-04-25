@@ -80,6 +80,23 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven3-plugin</artifactId>
+                <version>1.10.13</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat10x</containerId>
+                        <type>embedded</type>
+                    </container>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.port>8090</cargo.servlet.port>
+                            <cargo.context>/UrbanDriveSolutions</cargo.context>
+                        </properties>
+                    </configuration>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

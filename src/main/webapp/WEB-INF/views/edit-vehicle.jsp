@@ -1,49 +1,135 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit Vehicle</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Vehicle — Urban Drive Solutions</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
 </head>
 <body>
-<h1>Edit Vehicle</h1>
 
-<p style="color: red;">${errorMessage}</p>
+<!-- ── Admin Sidebar ── -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="${pageContext.request.contextPath}/home">
+            <span class="sidebar-brand-name">Admin Console</span>
+            <span class="sidebar-brand-sub">Fleet Management</span>
+        </a>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="${pageContext.request.contextPath}/home"            class="sidebar-link"><span class="material-symbols-outlined">home</span><span>Home</span></a>
+        <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-link"><span class="material-symbols-outlined">dashboard</span><span>Overview</span></a>
+        <a href="${pageContext.request.contextPath}/vehicles"        class="sidebar-link active"><span class="material-symbols-outlined">directions_car</span><span>Fleet</span></a>
+        <a href="${pageContext.request.contextPath}/bookings"        class="sidebar-link"><span class="material-symbols-outlined">calendar_today</span><span>Bookings</span></a>
+        <a href="${pageContext.request.contextPath}/payments"        class="sidebar-link"><span class="material-symbols-outlined">payments</span><span>Revenue</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="sidebar-divider"></div>
+        <a href="${pageContext.request.contextPath}/logout" class="sidebar-link"><span class="material-symbols-outlined">logout</span><span>Logout</span></a>
+    </div>
+</aside>
 
-<form action="${pageContext.request.contextPath}/vehicles/edit" method="post">
-    <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
+<!-- ── Main ── -->
+<main class="page-sidebar">
 
-    <label>Brand:</label><br>
-    <input type="text" name="brand" value="${vehicle.brand}" required><br><br>
+    <!-- Header -->
+    <div class="page-header">
+        <div>
+            <a href="${pageContext.request.contextPath}/vehicles" class="back-link">
+                <span class="material-symbols-outlined">arrow_back</span>Back to Fleet
+            </a>
+            <span class="page-eyebrow">Fleet Management</span>
+            <h1 class="page-title">Edit Vehicle</h1>
+            <p class="page-subtitle">${vehicle.brand} ${vehicle.model} — ${vehicle.registrationNumber}</p>
+        </div>
+    </div>
 
-    <label>Model:</label><br>
-    <input type="text" name="model" value="${vehicle.model}" required><br><br>
+    <!-- Error -->
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-error">
+            <span class="material-symbols-outlined">error</span>${errorMessage}
+        </div>
+    </c:if>
 
-    <label>Vehicle Type:</label><br>
-    <input type="text" name="vehicleType" value="${vehicle.vehicleType}" required><br><br>
+    <!-- Form -->
+    <div style="max-width:42rem;">
+        <div class="card">
+            <div class="card-body-lg">
+                <form action="${pageContext.request.contextPath}/vehicles/edit" method="post" class="form-space">
+                    <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
 
-    <label>Registration Number:</label><br>
-    <input type="text" name="registrationNumber" value="${vehicle.registrationNumber}" required><br><br>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="brand">Brand</label>
+                            <input id="brand" type="text" name="brand" value="${vehicle.brand}" required class="form-input"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="model">Model</label>
+                            <input id="model" type="text" name="model" value="${vehicle.model}" required class="form-input"/>
+                        </div>
+                    </div>
 
-    <label>Color:</label><br>
-    <input type="text" name="color" value="${vehicle.color}" required><br><br>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="vehicleType">Vehicle Type</label>
+                            <input id="vehicleType" type="text" name="vehicleType" value="${vehicle.vehicleType}" required class="form-input"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="registrationNumber">Registration Number</label>
+                            <input id="registrationNumber" type="text" name="registrationNumber"
+                                   value="${vehicle.registrationNumber}" required class="form-input"/>
+                        </div>
+                    </div>
 
-    <label>Seats:</label><br>
-    <input type="number" name="seats" min="1" value="${vehicle.seats}" required><br><br>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="color">Color</label>
+                            <input id="color" type="text" name="color" value="${vehicle.color}" required class="form-input"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="seats">Number of Seats</label>
+                            <input id="seats" type="number" name="seats" min="1" value="${vehicle.seats}" required class="form-input"/>
+                        </div>
+                    </div>
 
-    <label>Price Per Day:</label><br>
-    <input type="number" step="0.01" name="pricePerDay" min="0.01" value="${vehicle.pricePerDay}" required><br><br>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="pricePerDay">Price Per Day (Rs.)</label>
+                            <input id="pricePerDay" type="number" step="0.01" name="pricePerDay" min="0.01"
+                                   value="${vehicle.pricePerDay}" required class="form-input"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="availabilityStatus">Availability Status</label>
+                            <select id="availabilityStatus" name="availabilityStatus" required class="form-input">
+                                <option value="AVAILABLE"   <c:if test="${vehicle.availabilityStatus == 'AVAILABLE'}">selected</c:if>>Available</option>
+                                <option value="BOOKED"      <c:if test="${vehicle.availabilityStatus == 'BOOKED'}">selected</c:if>>Booked</option>
+                                <option value="MAINTENANCE" <c:if test="${vehicle.availabilityStatus == 'MAINTENANCE'}">selected</c:if>>Maintenance</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <label>Availability Status:</label><br>
-    <select name="availabilityStatus" required>
-        <option value="AVAILABLE" <c:if test="${vehicle.availabilityStatus == 'AVAILABLE'}">selected</c:if>>AVAILABLE</option>
-        <option value="BOOKED" <c:if test="${vehicle.availabilityStatus == 'BOOKED'}">selected</c:if>>BOOKED</option>
-        <option value="MAINTENANCE" <c:if test="${vehicle.availabilityStatus == 'MAINTENANCE'}">selected</c:if>>MAINTENANCE</option>
-    </select><br><br>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-md">
+                            <span class="material-symbols-outlined">save</span>Update Vehicle
+                        </button>
+                        <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-outline btn-md">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <button type="submit">Update Vehicle</button>
-</form>
+    <!-- Footer -->
+    <div class="inner-footer">
+        <div>
+            <p class="footer-brand-name">Urban Drive Solutions</p>
+            <p class="footer-copy">&copy;2026 Urban Drive Solutions — Internal Admin Portal</p>
+        </div>
+    </div>
 
-<p><a href="${pageContext.request.contextPath}/vehicles">Back to Vehicles</a></p>
+</main>
 </body>
 </html>
