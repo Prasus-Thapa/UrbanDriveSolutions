@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +19,17 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Consume any one-time flash message (e.g. logout confirmation)
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String flash = (String) session.getAttribute("flashMessage");
+            if (flash != null) {
+                request.setAttribute("successMessage", flash);
+                session.removeAttribute("flashMessage");
+            }
+        }
+
         List<Vehicle> featuredVehicles = vehicleDAO.getAvailableVehicles();
         request.setAttribute("featuredVehicles", featuredVehicles);
         request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);

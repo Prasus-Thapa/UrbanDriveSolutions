@@ -33,8 +33,7 @@
                     <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-md">Logout</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login"    class="btn btn-outline btn-md">Login</a>
-                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary btn-md">Register</a>
+                    <a href="${pageContext.request.contextPath}/login" class="btn btn-primary btn-md">Sign Up</a>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -84,82 +83,92 @@
         </div>
         </c:if>
 
-        <div class="hero-actions" style="margin-top:1.5rem;">
-            <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-primary btn-lg">
-                <span class="material-symbols-outlined">directions_car</span>Browse the Fleet
-            </a>
-            <c:choose>
-                <c:when test="${not empty sessionScope.loggedInUser}">
-                    <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-outline btn-lg">
-                        <span class="material-symbols-outlined">dashboard</span>My Dashboard
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login" class="btn btn-outline btn-lg">
-                        <span class="material-symbols-outlined">login</span>Sign In
-                    </a>
-                </c:otherwise>
-            </c:choose>
-        </div>
     </section>
 
     <!-- Stats -->
     <section class="stats-row">
         <div class="stats-inner">
             <div class="stat-item">
-                <p class="stat-number">200+</p>
+                <p class="stat-number" id="stat-vehicles">0+</p>
                 <p class="stat-label">Premium Vehicles</p>
             </div>
             <div class="stat-item">
-                <p class="stat-number">5,000+</p>
+                <p class="stat-number" id="stat-customers">0+</p>
                 <p class="stat-label">Happy Customers</p>
+
+            </div>
+            <div class="stat-item">
+                <p class="stat-number" id="stat-satisfaction">0%</p>
+                <p class="stat-label">Satisfaction Rate</p>
             </div>
             <div class="stat-item">
                 <p class="stat-number">24/7</p>
                 <p class="stat-label">Customer Support</p>
-            </div>
-            <div class="stat-item">
-                <p class="stat-number">99%</p>
-                <p class="stat-label">Satisfaction Rate</p>
             </div>
         </div>
     </section>
 
     <!-- Vehicle Fleet -->
     <section style="padding:4rem 0; background:#fff;">
-        <div style="max-width:1200px; margin:0 auto; padding:0 2rem;">
+        <div style="max-width:1600px; margin:0 auto; padding:0 4rem;">
             <div style="text-align:center; margin-bottom:2.5rem;">
-                <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--n-400); margin-bottom:0.5rem;">Available Now</p>
                 <h2 style="font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:800; letter-spacing:-0.03em;">Our Vehicle Fleet</h2>
                 <p style="color:var(--n-500); margin-top:0.5rem; font-size:0.95rem;">Browse our curated selection of premium vehicles ready for your next journey.</p>
             </div>
 
             <c:choose>
                 <c:when test="${not empty featuredVehicles}">
-                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem;">
-                        <c:forEach var="v" items="${featuredVehicles}" end="5">
-                            <div class="card" style="overflow:hidden;">
-                                <div style="background:var(--n-100); height:140px; display:flex; align-items:center; justify-content:center;">
-                                    <span class="material-symbols-outlined" style="font-size:4rem; color:var(--n-300);">directions_car</span>
+                    <div style="position:relative;">
+                        <!-- Scrollable track -->
+                        <div id="vehicleSlider"
+                             style="display:flex; gap:1.25rem; overflow-x:auto; scroll-behavior:smooth;
+                                    scrollbar-width:none; -ms-overflow-style:none; padding:0.5rem 0 1rem;">
+                            <c:forEach var="v" items="${featuredVehicles}" end="5">
+                                <div class="card" style="overflow:hidden; flex:0 0 360px; min-width:360px;">
+                                    <div style="background:var(--n-100); height:140px; display:flex; align-items:center; justify-content:center;">
+                                        <span class="material-symbols-outlined" style="font-size:4rem; color:var(--n-300);">directions_car</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; margin-bottom:0.5rem;">
+                                            <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem;">${v.brand} ${v.model}</h3>
+                                            <span style="font-size:0.7rem; font-weight:600; background:var(--n-100); padding:0.2rem 0.6rem; border-radius:99px; white-space:nowrap; flex-shrink:0;">${v.vehicleType}</span>
+                                        </div>
+                                        <div style="display:flex; gap:1rem; font-size:0.8rem; color:var(--n-500); margin-bottom:1rem;">
+                                            <span><span class="material-symbols-outlined" style="font-size:0.9rem; vertical-align:middle;">person</span> ${v.seats} seats</span>
+                                            <span><span class="material-symbols-outlined" style="font-size:0.9rem; vertical-align:middle;">palette</span> ${v.color}</span>
+                                        </div>
+                                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                                            <p style="font-weight:800; font-size:1.05rem;">Rs. ${v.pricePerDay}<span style="font-size:0.75rem; font-weight:400; color:var(--n-500);">/day</span></p>
+                                            <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-primary btn-sm">Book Now</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; margin-bottom:0.5rem;">
-                                        <h3 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem;">${v.brand} ${v.model}</h3>
-                                        <span style="font-size:0.7rem; font-weight:600; background:var(--n-100); padding:0.2rem 0.6rem; border-radius:99px; white-space:nowrap; flex-shrink:0;">${v.vehicleType}</span>
-                                    </div>
-                                    <div style="display:flex; gap:1rem; font-size:0.8rem; color:var(--n-500); margin-bottom:1rem;">
-                                        <span><span class="material-symbols-outlined" style="font-size:0.9rem; vertical-align:middle;">person</span> ${v.seats} seats</span>
-                                        <span><span class="material-symbols-outlined" style="font-size:0.9rem; vertical-align:middle;">palette</span> ${v.color}</span>
-                                    </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                                        <p style="font-weight:800; font-size:1.05rem;">Rs. ${v.pricePerDay}<span style="font-size:0.75rem; font-weight:400; color:var(--n-500);">/day</span></p>
-                                        <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-primary btn-sm">Book Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </div>
+
+                        <!-- Prev arrow -->
+                        <button onclick="slideVehicles(-1)" aria-label="Previous"
+                                style="position:absolute; left:0; top:45%; transform:translateY(-50%); z-index:2;
+                                       width:2.5rem; height:2.5rem; border-radius:50%; border:1px solid var(--n-200);
+                                       background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+                                       box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                            <span class="material-symbols-outlined" style="font-size:1.25rem;">chevron_left</span>
+                        </button>
+
+                        <!-- Next arrow -->
+                        <button onclick="slideVehicles(1)" aria-label="Next"
+                                style="position:absolute; right:0; top:45%; transform:translateY(-50%); z-index:2;
+                                       width:2.5rem; height:2.5rem; border-radius:50%; border:1px solid var(--n-200);
+                                       background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+                                       box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                            <span class="material-symbols-outlined" style="font-size:1.25rem;">chevron_right</span>
+                        </button>
                     </div>
-                    <div style="text-align:center; margin-top:2rem;">
+
+                    <!-- Dot indicators -->
+                    <div id="sliderDots" style="display:flex; justify-content:center; gap:0.5rem; margin-top:1.25rem;"></div>
+
+                    <div style="text-align:center; margin-top:1.5rem;">
                         <a href="${pageContext.request.contextPath}/vehicles" class="btn btn-outline btn-lg">View All Vehicles</a>
                     </div>
                 </c:when>
@@ -302,9 +311,97 @@ function handleVehicleSearch() {
             window.location.href = '${pageContext.request.contextPath}/vehicles';
         </c:when>
         <c:otherwise>
-            window.location.href = '${pageContext.request.contextPath}/login';
+            window.location.href = '${pageContext.request.contextPath}/login?redirect=vehicles';
         </c:otherwise>
     </c:choose>
+}
+
+// Count-up animation triggered when the stats section scrolls into view
+(function () {
+    function countUp(el, target, duration, suffix) {
+        var start = 0;
+        var startTime = null;
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 2);
+            var value = Math.floor(eased * target);
+            el.textContent = value.toLocaleString() + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    var stats = [
+        { id: 'stat-vehicles',     target: 200,  suffix: '+' },
+        { id: 'stat-customers',    target: 2500, suffix: '+' },
+{ id: 'stat-satisfaction', target: 99,   suffix: '%' }
+    ];
+
+    var observed = false;
+    var section = document.querySelector('.stats-row');
+    if (!section) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+        if (observed || !entries[0].isIntersecting) return;
+        observed = true;
+        stats.forEach(function (s) {
+            var el = document.getElementById(s.id);
+            if (el) countUp(el, s.target, 4000, s.suffix);
+        });
+    }, { threshold: 0.3 });
+
+    observer.observe(section);
+})();
+
+// Vehicle slider
+(function () {
+    var style = document.createElement('style');
+    style.textContent = '#vehicleSlider::-webkit-scrollbar{display:none}';
+    document.head.appendChild(style);
+
+    var slider   = document.getElementById('vehicleSlider');
+    var dotsWrap = document.getElementById('sliderDots');
+    if (!slider || !dotsWrap) return;
+
+    var cards = slider.querySelectorAll(':scope > div');
+    var total = cards.length;
+    if (total === 0) return;
+
+    for (var i = 0; i < total; i++) {
+        var dot = document.createElement('span');
+        dot.style.cssText = 'display:inline-block;width:8px;height:8px;border-radius:50%;background:#d1d5db;transition:background 0.2s,transform 0.2s;cursor:pointer;';
+        dot.dataset.idx = i;
+        dot.addEventListener('click', function () {
+            var card = cards[parseInt(this.dataset.idx)];
+            if (card) slider.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
+        });
+        dotsWrap.appendChild(dot);
+    }
+
+    function updateDots() {
+        var mid = slider.scrollLeft + slider.clientWidth / 2;
+        var closest = 0, minDist = Infinity;
+        cards.forEach(function (c, i) {
+            var dist = Math.abs((c.offsetLeft + c.offsetWidth / 2) - mid);
+            if (dist < minDist) { minDist = dist; closest = i; }
+        });
+        dotsWrap.querySelectorAll('span').forEach(function (d, i) {
+            d.style.background = i === closest ? '#111' : '#d1d5db';
+            d.style.transform  = i === closest ? 'scale(1.3)' : 'scale(1)';
+        });
+    }
+
+    slider.addEventListener('scroll', updateDots);
+    updateDots();
+})();
+
+function slideVehicles(dir) {
+    var slider = document.getElementById('vehicleSlider');
+    if (!slider) return;
+    var card = slider.querySelector(':scope > div');
+    if (!card) return;
+    slider.scrollBy({ left: dir * (card.offsetWidth + 20), behavior: 'smooth' });
 }
 </script>
 </body>

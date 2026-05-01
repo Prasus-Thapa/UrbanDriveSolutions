@@ -22,7 +22,10 @@ public class LogoutServlet extends HttpServlet {
             session.invalidate();
         }
 
-        request.setAttribute("successMessage", "Logout successful.");
-        request.getRequestDispatcher("/home").forward(request, response);
+        // Flash the message on a fresh session so it survives the redirect but disappears on refresh
+        HttpSession flash = request.getSession(true);
+        flash.setAttribute("flashMessage", "Logged out successfully.");
+
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 }

@@ -51,7 +51,11 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("loggedInUser", user);
 
-        request.setAttribute("successMessage", "Login successful.");
-        request.getRequestDispatcher("/dashboard").forward(request, response);
+        String redirect = request.getParameter("redirect");
+        String destination = "vehicles".equals(redirect) && !"ADMIN".equalsIgnoreCase(user.getRole())
+                ? "/vehicles"
+                : "/dashboard";
+
+        response.sendRedirect(request.getContextPath() + destination);
     }
 }
