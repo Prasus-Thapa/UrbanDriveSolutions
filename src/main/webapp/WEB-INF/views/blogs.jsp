@@ -21,6 +21,8 @@
             <a href="${pageContext.request.contextPath}/blogs" class="active">Blogs</a>
             <a href="${pageContext.request.contextPath}/about">About Us</a>
             <c:if test="${not empty sessionScope.loggedInUser}">
+                <a href="${pageContext.request.contextPath}/bookings">My Bookings</a>
+                <a href="${pageContext.request.contextPath}/payments">My Payments</a>
                 <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
             </c:if>
         </div>
@@ -30,8 +32,7 @@
                     <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-md">Logout</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login"    class="btn btn-outline btn-md">Login</a>
-                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary btn-md">Register</a>
+                    <a href="${pageContext.request.contextPath}/login" class="btn btn-primary btn-md">Sign Up</a>
                 </c:otherwise>
             </c:choose>
         </div>

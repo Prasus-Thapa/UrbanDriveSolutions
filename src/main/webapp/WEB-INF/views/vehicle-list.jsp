@@ -80,7 +80,7 @@
             <a href="${pageContext.request.contextPath}/vehicles" class="active">Browse Fleet</a>
             <a href="${pageContext.request.contextPath}/blogs">Blogs</a>
             <a href="${pageContext.request.contextPath}/about">About Us</a>
-            <c:if test="${loggedIn}">
+            <c:if test="${not empty sessionScope.loggedInUser}">
                 <a href="${pageContext.request.contextPath}/bookings">My Bookings</a>
                 <a href="${pageContext.request.contextPath}/payments">My Payments</a>
                 <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
@@ -88,12 +88,11 @@
         </div>
         <div class="nav-actions">
             <c:choose>
-                <c:when test="${loggedIn}">
+                <c:when test="${not empty sessionScope.loggedInUser}">
                     <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-md">Logout</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login"    class="btn btn-outline btn-md">Login</a>
-                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary btn-md">Register</a>
+                    <a href="${pageContext.request.contextPath}/login" class="btn btn-primary btn-md">Sign Up</a>
                 </c:otherwise>
             </c:choose>
         </div>
