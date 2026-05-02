@@ -16,6 +16,9 @@
 <nav class="top-nav">
     <div class="top-nav-inner">
         <a href="${pageContext.request.contextPath}/home" class="nav-brand">Urban Drive Solutions</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
 
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home" class="active">Home</a>
@@ -245,8 +248,70 @@
                 </div>
 
             </div>
+
+            <!-- Hidden reviews — fold reveal -->
+            <div id="reviewsMoreWrap" class="reviews-more-wrap">
+                <div class="reviews-more-grid">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+                                <div style="width:40px; height:40px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <span class="material-symbols-outlined" style="font-size:1.25rem; color:var(--n-400);">person</span>
+                                </div>
+                                <div>
+                                    <p style="font-weight:700; font-size:0.9rem;">Priya Karki</p>
+                                    <span style="color:#f59e0b; font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                                </div>
+                            </div>
+                            <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                                First time renting a car in Nepal and it couldn't have been easier. The team was professional and the vehicle was in perfect condition throughout our Chitwan trip.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+                                <div style="width:40px; height:40px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <span class="material-symbols-outlined" style="font-size:1.25rem; color:var(--n-400);">person</span>
+                                </div>
+                                <div>
+                                    <p style="font-weight:700; font-size:0.9rem;">Rohan Adhikari</p>
+                                    <span style="color:#f59e0b; font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                                </div>
+                            </div>
+                            <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                                Used Urban Drive for a business trip from Kathmandu to Hetauda. On-time pickup, clean interior, and a hassle-free return. Will be my go-to rental service from now on.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+                                <div style="width:40px; height:40px; border-radius:50%; background:var(--n-100); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <span class="material-symbols-outlined" style="font-size:1.25rem; color:var(--n-400);">person</span>
+                                </div>
+                                <div>
+                                    <p style="font-weight:700; font-size:0.9rem;">Anita Gurung</p>
+                                    <span style="color:#f59e0b; font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                                </div>
+                            </div>
+                            <p style="font-size:0.875rem; color:var(--n-500); line-height:1.65;">
+                                The cancellation policy saved me when my plans changed last minute. Got a full refund with no drama at all. Genuinely impressed with how fair and transparent everything was.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <div style="text-align:center; margin-top:2rem;">
-                <button class="btn btn-outline btn-lg" disabled style="cursor:default;">Read More Reviews</button>
+                <button id="reviewToggle" class="btn btn-outline btn-lg">
+                    <span class="review-label">Read More Reviews</span>
+                    <span class="material-symbols-outlined review-arrow">expand_more</span>
+                </button>
             </div>
         </div>
     </section>
@@ -405,6 +470,22 @@ function slideVehicles(dir) {
     if (!card) return;
     slider.scrollBy({ left: dir * (card.offsetWidth + 20), behavior: 'smooth' });
 }
+
+// Reviews fold reveal
+(function () {
+    var btn  = document.getElementById('reviewToggle');
+    var wrap = document.getElementById('reviewsMoreWrap');
+    if (!btn || !wrap) return;
+    btn.addEventListener('click', function () {
+        var isOpen = wrap.classList.toggle('open');
+        btn.classList.toggle('open', isOpen);
+        btn.querySelector('.review-label').textContent = isOpen ? 'Show Less' : 'Read More Reviews';
+        if (isOpen) {
+            wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    });
+})();
 </script>
+<script src="${pageContext.request.contextPath}/static/js/nav.js"></script>
 </body>
 </html>

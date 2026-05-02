@@ -550,31 +550,43 @@ td.t-right { text-align: right; }
    HOME PAGE
    ============================================================ */
 .hero {
-  padding: 8rem 2rem 6rem;
-  max-width: 1600px;
-  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  padding: 8rem 4rem 6rem;
+  background-image: url('../img/hero-bg.png');
+  background-size: cover;
+  background-position: center 45%;
+  overflow: hidden;
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.38) 55%, rgba(0,0,0,0.55) 100%);
+  z-index: 0;
+}
+.hero > * { position: relative; z-index: 1; }
 .hero-badge {
   display: block;
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: var(--n-400);
+  color: rgba(255,255,255,0.65);
   margin-bottom: 1.5rem;
 }
 .hero-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(4rem, 10vw, 9rem);
   font-weight: 700;
-  color: #000;
+  color: #fff;
   line-height: 0.95;
   letter-spacing: -0.04em;
   margin-bottom: 2rem;
 }
 .hero-desc {
   font-size: 1.1rem;
-  color: var(--secondary);
+  color: rgba(255,255,255,0.8);
   max-width: 38rem;
   margin-bottom: 3rem;
   line-height: 1.75;
@@ -613,6 +625,28 @@ td.t-right { text-align: right; }
   font-weight: 500;
   color: var(--n-500);
   margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .stats-inner {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 2rem 1.25rem;
+  }
+  .stat-item {
+    padding: 1.25rem 1rem;
+  }
+  /* Remove right border from 2nd and 4th items (right column) */
+  .stat-item:nth-child(2n) {
+    border-right: none;
+  }
+  /* Add bottom border between the two rows */
+  .stat-item:nth-child(-n+2) {
+    border-bottom: 1px solid var(--n-200);
+  }
+  /* Shrink the number slightly so "2500+" fits comfortably */
+  .stat-number {
+    font-size: 1.875rem;
+  }
 }
 
 /* CTA banner */
@@ -1075,3 +1109,120 @@ td.t-right { text-align: right; }
 .flex-1  { flex: 1; }
 .text-center { text-align: center; }
 .text-right  { text-align: right; }
+
+/* ============================================================
+   RESPONSIVE NAV — HAMBURGER MENU
+   ============================================================ */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #000;
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.2s;
+  transform-origin: center;
+}
+
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+
+  .top-nav-inner {
+    flex-wrap: wrap;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .nav-links,
+  .nav-actions { display: none; }
+
+  .top-nav.nav-open .nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    padding: 0.5rem 0 0.25rem;
+    border-top: 1px solid var(--n-200);
+    margin-top: 0.5rem;
+  }
+  .top-nav.nav-open .nav-links a {
+    padding: 0.75rem 0;
+    font-size: 0.9375rem;
+    border-bottom: 1px solid var(--n-100);
+    border-bottom-width: 1px;
+  }
+  .top-nav.nav-open .nav-links a:last-child { border-bottom: none; }
+  .top-nav.nav-open .nav-links a.active { border-bottom-color: var(--n-100); }
+
+  .top-nav.nav-open .nav-actions {
+    display: flex;
+    width: 100%;
+    padding: 0.75rem 0 0.5rem;
+  }
+  .top-nav.nav-open .nav-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 3 bars → X */
+  .top-nav.nav-open .nav-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .top-nav.nav-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .top-nav.nav-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+/* ============================================================
+   REVIEWS — FOLDED PAPER REVEAL
+   ============================================================ */
+.reviews-more-wrap {
+  perspective: 1200px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reviews-more-wrap.open {
+  max-height: 1400px;
+}
+.reviews-more-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  transform-origin: top center;
+  transform: rotateX(-70deg) scaleY(0.05);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.08s,
+              opacity 0.45s ease 0.12s;
+}
+.reviews-more-wrap.open .reviews-more-grid {
+  transform: rotateX(0deg) scaleY(1);
+  opacity: 1;
+}
+#reviewToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+#reviewToggle .review-arrow {
+  font-size: 1.25rem;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#reviewToggle.open .review-arrow {
+  transform: rotate(180deg);
+}

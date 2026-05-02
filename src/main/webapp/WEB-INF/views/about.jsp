@@ -15,6 +15,9 @@
 <nav class="top-nav">
     <div class="top-nav-inner">
         <a href="${pageContext.request.contextPath}/home" class="nav-brand">Urban Drive Solutions</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home">Home</a>
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
@@ -77,11 +80,11 @@
     <div class="stats-row" style="margin-bottom:1.5rem;">
         <div class="stats-inner">
             <div class="stat-item">
-                <p class="stat-number">200+</p>
+                <p class="stat-number" id="about-stat-vehicles">0+</p>
                 <p class="stat-label">Premium Vehicles</p>
             </div>
             <div class="stat-item">
-                <p class="stat-number">5,000+</p>
+                <p class="stat-number" id="about-stat-customers">0+</p>
                 <p class="stat-label">Happy Customers</p>
             </div>
             <div class="stat-item">
@@ -89,7 +92,7 @@
                 <p class="stat-label">Customer Support</p>
             </div>
             <div class="stat-item">
-                <p class="stat-number">99%</p>
+                <p class="stat-number" id="about-stat-satisfaction">0%</p>
                 <p class="stat-label">Satisfaction Rate</p>
             </div>
         </div>
@@ -258,5 +261,44 @@
     </div>
 
 </main>
+<script>
+(function () {
+    var stats = [
+        { id: 'about-stat-vehicles',     target: 200,  suffix: '+' },
+        { id: 'about-stat-customers',    target: 2500, suffix: '+' },
+        { id: 'about-stat-satisfaction', target: 99,   suffix: '%' }
+    ];
+
+    function animateStat(el, target, suffix) {
+        var duration = 1800;
+        var start = null;
+        function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 2);
+            el.textContent = Math.floor(eased * target) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    var section = document.querySelector('.stats-row');
+    if (!section) return;
+
+    var triggered = false;
+    var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting && !triggered) {
+            triggered = true;
+            stats.forEach(function (s) {
+                var el = document.getElementById(s.id);
+                if (el) animateStat(el, s.target, s.suffix);
+            });
+        }
+    }, { threshold: 0.3 });
+
+    observer.observe(section);
+})();
+</script>
+<script src="${pageContext.request.contextPath}/static/js/nav.js"></script>
 </body>
 </html>

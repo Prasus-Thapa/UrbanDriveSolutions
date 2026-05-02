@@ -15,6 +15,9 @@
 <nav class="top-nav">
     <div class="top-nav-inner">
         <a href="${pageContext.request.contextPath}/home" class="nav-brand">Urban Drive Solutions</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/home">Home</a>
             <a href="${pageContext.request.contextPath}/vehicles">Browse Fleet</a>
@@ -244,5 +247,6 @@
     </div>
 
 </main>
+<script src="${pageContext.request.contextPath}/static/js/nav.js"></script>
 </body>
 </html>
