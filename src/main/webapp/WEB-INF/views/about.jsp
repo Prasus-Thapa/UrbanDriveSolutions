@@ -88,12 +88,12 @@
                 <p class="stat-label">Happy Customers</p>
             </div>
             <div class="stat-item">
-                <p class="stat-number">24/7</p>
-                <p class="stat-label">Customer Support</p>
-            </div>
-            <div class="stat-item">
                 <p class="stat-number" id="about-stat-satisfaction">0%</p>
                 <p class="stat-label">Satisfaction Rate</p>
+            </div>
+            <div class="stat-item">
+                <p class="stat-number">24/7</p>
+                <p class="stat-label">Customer Support</p>
             </div>
         </div>
     </div>
